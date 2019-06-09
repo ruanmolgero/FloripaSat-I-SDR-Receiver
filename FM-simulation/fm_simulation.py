@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Top Block
-# Generated: Tue Jun  4 16:57:13 2019
+# Title: Fm Simulation
+# Generated: Sun Jun  9 11:47:59 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -21,6 +21,7 @@ if __name__ == '__main__':
 from PyQt5 import Qt
 from PyQt5 import Qt, QtCore
 from gnuradio import analog
+from gnuradio import audio
 from gnuradio import blocks
 from gnuradio import eng_notation
 from gnuradio import filter
@@ -28,19 +29,21 @@ from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
+from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
+import epy_block_0
 import numpy
 import sip
 import sys
 from gnuradio import qtgui
 
 
-class top_block(gr.top_block, Qt.QWidget):
+class fm_simulation(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Top Block")
+        gr.top_block.__init__(self, "Fm Simulation")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Top Block")
+        self.setWindowTitle("Fm Simulation")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -58,7 +61,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "fm_simulation")
 
         if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
             self.restoreGeometry(self.settings.value("geometry").toByteArray())
@@ -68,28 +71,27 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
+        self.samp_rate = samp_rate = 48000
         self.pi = pi = numpy.pi
         self.kf = kf = 30e3
-        self.fs_tx = fs_tx = 200e3
-        self.samp_rate = samp_rate = 48000
+        self.fs_tx = fs_tx = samp_rate*25/6
         self.gain_FM = gain_FM = 2*pi*kf / fs_tx
+        self.fs_SDR = fs_SDR = samp_rate*5
+        self.delta_freq = delta_freq = 1e3
 
         ##################################################
         # Blocks
         ##################################################
-        self.rational_resampler_xxx_0_0_0_0_1_0 = filter.rational_resampler_ccf(
-                interpolation=1,
-                decimation=5,
-                taps=None,
-                fractional_bw=None,
-        )
-        self.rational_resampler_xxx_0_0_0_0_1 = filter.rational_resampler_fff(
+        self._delta_freq_range = Range(0, 200e3, 200, 1e3, 200)
+        self._delta_freq_win = RangeWidget(self._delta_freq_range, self.set_delta_freq, "delta_freq", "counter_slider", float)
+        self.top_layout.addWidget(self._delta_freq_win)
+        self.rational_resampler_xxx_0_0_0_0_1_0 = filter.rational_resampler_fff(
                 interpolation=1,
                 decimation=5,
                 taps=(firdes.low_pass(1,1,0.5/5,0.001)),
                 fractional_bw=None,
         )
-        self.rational_resampler_xxx_0_0_0_0 = filter.rational_resampler_ccf(
+        self.rational_resampler_xxx_0_0_0_0_0 = filter.rational_resampler_ccf(
                 interpolation=6,
                 decimation=5,
                 taps=(firdes.low_pass(6,1,0.5/6,0.001)),
@@ -144,63 +146,21 @@ class top_block(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_1_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_1_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_1_0_win)
-        self.qtgui_freq_sink_x_0_1 = qtgui.freq_sink_c(
-        	2048, #size
-        	firdes.WIN_BLACKMAN_hARRIS, #wintype
-        	0, #fc
-        	samp_rate, #bw
-        	"Antes", #name
-        	1 #number of inputs
-        )
-        self.qtgui_freq_sink_x_0_1.set_update_time(0.10)
-        self.qtgui_freq_sink_x_0_1.set_y_axis(-140, 10)
-        self.qtgui_freq_sink_x_0_1.set_y_label('Relative Gain', 'dB')
-        self.qtgui_freq_sink_x_0_1.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
-        self.qtgui_freq_sink_x_0_1.enable_autoscale(False)
-        self.qtgui_freq_sink_x_0_1.enable_grid(True)
-        self.qtgui_freq_sink_x_0_1.set_fft_average(1.0)
-        self.qtgui_freq_sink_x_0_1.enable_axis_labels(True)
-        self.qtgui_freq_sink_x_0_1.enable_control_panel(False)
-
-        if not True:
-          self.qtgui_freq_sink_x_0_1.disable_legend()
-
-        if "complex" == "float" or "complex" == "msg_float":
-          self.qtgui_freq_sink_x_0_1.set_plot_pos_half(not True)
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_freq_sink_x_0_1.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_freq_sink_x_0_1.set_line_label(i, labels[i])
-            self.qtgui_freq_sink_x_0_1.set_line_width(i, widths[i])
-            self.qtgui_freq_sink_x_0_1.set_line_color(i, colors[i])
-            self.qtgui_freq_sink_x_0_1.set_line_alpha(i, alphas[i])
-
-        self._qtgui_freq_sink_x_0_1_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_1.pyqwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_freq_sink_x_0_1_win)
-        self.dc_blocker_xx_0 = filter.dc_blocker_ff(32, True)
+        self.epy_block_0 = epy_block_0.blk(modulus=6.283185307179586)
+        self.dc_blocker_xx_0 = filter.dc_blocker_ff(2048, True)
+        self.blocks_wavfile_source_0 = blocks.wavfile_source('/home/cho/Documents/ufsc/20191/sdr/gnuradio/queen-dont-stop-me-now-official-video.wav', True)
         self.blocks_multiply_xx_0_1 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
-        self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_vff((1/gain_FM, ))
+        self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_vff((fs_SDR/(2*pi*kf), ))
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((gain_FM, ))
         self.blocks_magphase_to_complex_0 = blocks.magphase_to_complex(1)
-        self.blocks_integrate_xx_0 = blocks.integrate_ff(0, 1)
         self.blocks_delay_1 = blocks.delay(gr.sizeof_gr_complex*1, 1)
         self.blocks_conjugate_cc_0 = blocks.conjugate_cc()
         self.blocks_complex_to_arg_0 = blocks.complex_to_arg(1)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
-        self.analog_sig_source_x_0_0 = analog.sig_source_c(240e3, analog.GR_SIN_WAVE, 1e3, 1, pi/6)
-        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 440, 1, 0)
-        self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 1e-12, 0)
+        self.audio_sink_0 = audio.sink(samp_rate, '', True)
+        self.analog_sig_source_x_0_0 = analog.sig_source_c(240e3, analog.GR_COS_WAVE, delta_freq, 1, 0)
+        self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 1e-6, 0)
         self.analog_const_source_x_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, 1)
 
         ##################################################
@@ -208,30 +168,38 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         self.connect((self.analog_const_source_x_0_0, 0), (self.blocks_magphase_to_complex_0, 0))
         self.connect((self.analog_noise_source_x_0, 0), (self.blocks_add_xx_0, 1))
-        self.connect((self.analog_sig_source_x_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_multiply_xx_0, 1))
         self.connect((self.blocks_add_xx_0, 0), (self.blocks_delay_1, 0))
         self.connect((self.blocks_add_xx_0, 0), (self.blocks_multiply_xx_0_1, 0))
         self.connect((self.blocks_complex_to_arg_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
         self.connect((self.blocks_conjugate_cc_0, 0), (self.blocks_multiply_xx_0_1, 1))
         self.connect((self.blocks_delay_1, 0), (self.blocks_conjugate_cc_0, 0))
-        self.connect((self.blocks_integrate_xx_0, 0), (self.blocks_magphase_to_complex_0, 1))
-        self.connect((self.blocks_magphase_to_complex_0, 0), (self.rational_resampler_xxx_0_0_0_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_integrate_xx_0, 0))
+        self.connect((self.blocks_magphase_to_complex_0, 0), (self.rational_resampler_xxx_0_0_0_0_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.epy_block_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.dc_blocker_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_add_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0_1, 0), (self.blocks_complex_to_arg_0, 0))
-        self.connect((self.dc_blocker_xx_0, 0), (self.rational_resampler_xxx_0_0_0_0_1, 0))
+        self.connect((self.blocks_wavfile_source_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.dc_blocker_xx_0, 0), (self.rational_resampler_xxx_0_0_0_0_1_0, 0))
+        self.connect((self.epy_block_0, 0), (self.blocks_magphase_to_complex_0, 1))
         self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.rational_resampler_xxx_0_0_0_0, 0), (self.blocks_multiply_xx_0, 0))
-        self.connect((self.rational_resampler_xxx_0_0_0_0, 0), (self.rational_resampler_xxx_0_0_0_0_1_0, 0))
-        self.connect((self.rational_resampler_xxx_0_0_0_0_1, 0), (self.qtgui_freq_sink_x_0_1_0, 0))
-        self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.qtgui_freq_sink_x_0_1, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_0, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.audio_sink_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.qtgui_freq_sink_x_0_1_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "fm_simulation")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
+
+    def get_samp_rate(self):
+        return self.samp_rate
+
+    def set_samp_rate(self, samp_rate):
+        self.samp_rate = samp_rate
+        self.set_fs_SDR(self.samp_rate*5)
+        self.qtgui_freq_sink_x_0_1_0.set_frequency_range(0, self.samp_rate)
+        self.set_fs_tx(self.samp_rate*25/6)
 
     def get_pi(self):
         return self.pi
@@ -239,7 +207,7 @@ class top_block(gr.top_block, Qt.QWidget):
     def set_pi(self, pi):
         self.pi = pi
         self.set_gain_FM(2*self.pi*self.kf / self.fs_tx)
-        self.analog_sig_source_x_0_0.set_offset(self.pi/6)
+        self.blocks_multiply_const_vxx_0_0.set_k((self.fs_SDR/(2*self.pi*self.kf), ))
 
     def get_kf(self):
         return self.kf
@@ -247,6 +215,7 @@ class top_block(gr.top_block, Qt.QWidget):
     def set_kf(self, kf):
         self.kf = kf
         self.set_gain_FM(2*self.pi*self.kf / self.fs_tx)
+        self.blocks_multiply_const_vxx_0_0.set_k((self.fs_SDR/(2*self.pi*self.kf), ))
 
     def get_fs_tx(self):
         return self.fs_tx
@@ -255,25 +224,29 @@ class top_block(gr.top_block, Qt.QWidget):
         self.fs_tx = fs_tx
         self.set_gain_FM(2*self.pi*self.kf / self.fs_tx)
 
-    def get_samp_rate(self):
-        return self.samp_rate
-
-    def set_samp_rate(self, samp_rate):
-        self.samp_rate = samp_rate
-        self.qtgui_freq_sink_x_0_1_0.set_frequency_range(0, self.samp_rate)
-        self.qtgui_freq_sink_x_0_1.set_frequency_range(0, self.samp_rate)
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
-
     def get_gain_FM(self):
         return self.gain_FM
 
     def set_gain_FM(self, gain_FM):
         self.gain_FM = gain_FM
-        self.blocks_multiply_const_vxx_0_0.set_k((1/self.gain_FM, ))
         self.blocks_multiply_const_vxx_0.set_k((self.gain_FM, ))
 
+    def get_fs_SDR(self):
+        return self.fs_SDR
 
-def main(top_block_cls=top_block, options=None):
+    def set_fs_SDR(self, fs_SDR):
+        self.fs_SDR = fs_SDR
+        self.blocks_multiply_const_vxx_0_0.set_k((self.fs_SDR/(2*self.pi*self.kf), ))
+
+    def get_delta_freq(self):
+        return self.delta_freq
+
+    def set_delta_freq(self, delta_freq):
+        self.delta_freq = delta_freq
+        self.analog_sig_source_x_0_0.set_frequency(self.delta_freq)
+
+
+def main(top_block_cls=fm_simulation, options=None):
 
     if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
         style = gr.prefs().get_string('qtgui', 'style', 'raster')
