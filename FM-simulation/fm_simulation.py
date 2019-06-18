@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Fm Simulation
-# Generated: Tue Jun 18 13:36:28 2019
+# Generated: Tue Jun 18 15:29:41 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -18,8 +18,13 @@ if __name__ == '__main__':
         except:
             print "Warning: failed to XInitThreads()"
 
+import os
+import sys
+sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
+
 from PyQt5 import Qt
 from PyQt5 import Qt, QtCore
+from fm_modulator import fm_modulator  # grc-generated hier_block
 from gnuradio import analog
 from gnuradio import audio
 from gnuradio import blocks
@@ -31,10 +36,8 @@ from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
-import custom
 import numpy
 import sip
-import sys
 from gnuradio import qtgui
 
 
@@ -146,13 +149,14 @@ class fm_simulation(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_1_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_1_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_1_0_win)
+        self.fm_modulator_0 = fm_modulator(
+            modulation_sensitivity=30e3,
+            samp_rate=200e3,
+        )
         self.dc_blocker_xx_0 = filter.dc_blocker_ff(2048, True)
-        self.custom_circular_accumulator_ff_0 = custom.circular_accumulator_ff(2*pi)
         self.blocks_multiply_xx_1 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
         self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_vff((fs_SDR/(2*pi*kf), ))
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((gain_FM, ))
-        self.blocks_magphase_to_complex_0 = blocks.magphase_to_complex(1)
         self.blocks_delay_1 = blocks.delay(gr.sizeof_gr_complex*1, 1)
         self.blocks_conjugate_cc_0 = blocks.conjugate_cc()
         self.blocks_complex_to_arg_0 = blocks.complex_to_arg(1)
@@ -161,12 +165,10 @@ class fm_simulation(gr.top_block, Qt.QWidget):
         self.analog_sig_source_x_0_0 = analog.sig_source_c(240e3, analog.GR_COS_WAVE, delta_freq, 1, 0)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 440, 0.25, 0)
         self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 1e-6, 0)
-        self.analog_const_source_x_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, 1)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_const_source_x_0_0, 0), (self.blocks_magphase_to_complex_0, 0))
         self.connect((self.analog_noise_source_x_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.analog_sig_source_x_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_multiply_xx_0, 1))
@@ -175,14 +177,12 @@ class fm_simulation(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_complex_to_arg_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
         self.connect((self.blocks_conjugate_cc_0, 0), (self.blocks_multiply_xx_1, 1))
         self.connect((self.blocks_delay_1, 0), (self.blocks_conjugate_cc_0, 0))
-        self.connect((self.blocks_magphase_to_complex_0, 0), (self.rational_resampler_xxx_0_0_0_0_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.custom_circular_accumulator_ff_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.dc_blocker_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_add_xx_0, 0))
         self.connect((self.blocks_multiply_xx_1, 0), (self.blocks_complex_to_arg_0, 0))
-        self.connect((self.custom_circular_accumulator_ff_0, 0), (self.blocks_magphase_to_complex_0, 1))
         self.connect((self.dc_blocker_xx_0, 0), (self.rational_resampler_xxx_0_0_0_0_1_0, 0))
-        self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.fm_modulator_0, 0), (self.rational_resampler_xxx_0_0_0_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.fm_modulator_0, 0))
         self.connect((self.rational_resampler_xxx_0_0_0_0_0, 0), (self.blocks_multiply_xx_0, 0))
         self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.audio_sink_0, 0))
         self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.qtgui_freq_sink_x_0_1_0, 0))
@@ -230,7 +230,6 @@ class fm_simulation(gr.top_block, Qt.QWidget):
 
     def set_gain_FM(self, gain_FM):
         self.gain_FM = gain_FM
-        self.blocks_multiply_const_vxx_0.set_k((self.gain_FM, ))
 
     def get_fs_SDR(self):
         return self.fs_SDR

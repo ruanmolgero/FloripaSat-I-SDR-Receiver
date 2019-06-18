@@ -307,53 +307,6 @@
     </param>
   </block>
   <block>
-    <key>analog_const_source_x</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>const</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(816, 164)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>analog_const_source_x_0_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-  </block>
-  <block>
     <key>analog_noise_source_x</key>
     <param>
       <key>amp</key>
@@ -377,7 +330,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1584, 300)</value>
+      <value>(1000, 316)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -499,7 +452,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1360, 284)</value>
+      <value>(776, 300)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -558,7 +511,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(3232, 340)</value>
+      <value>(2648, 356)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -601,7 +554,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1808, 232)</value>
+      <value>(1224, 248)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -652,7 +605,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2400, 264)</value>
+      <value>(1816, 280)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -695,7 +648,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2040, 320)</value>
+      <value>(1456, 336)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -738,7 +691,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1928, 316)</value>
+      <value>(1344, 332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -770,100 +723,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_magphase_to_complex</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1032, 200)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_magphase_to_complex_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_multiply_const_vxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>const</key>
-      <value>gain_FM</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(560, 228)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_multiply_const_vxx_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
     <key>blocks_multiply_const_vxx</key>
     <param>
       <key>alias</key>
@@ -887,7 +746,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2584, 260)</value>
+      <value>(2000, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -934,7 +793,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1648, 216)</value>
+      <value>(1064, 232)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -985,7 +844,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2256, 248)</value>
+      <value>(1672, 264)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1068,49 +927,6 @@
     </param>
   </block>
   <block>
-    <key>custom_circular_accumulator_ff</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(784, 228)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>custom_circular_accumulator_ff_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>modulus</key>
-      <value>2*pi</value>
-    </param>
-  </block>
-  <block>
     <key>dc_blocker_xx</key>
     <param>
       <key>alias</key>
@@ -1130,7 +946,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2784, 252)</value>
+      <value>(2200, 268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1159,6 +975,53 @@
     <param>
       <key>type</key>
       <value>ff</value>
+    </param>
+  </block>
+  <block>
+    <key>fm_modulator</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(496, 220)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fm_modulator_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>modulation_sensitivity</key>
+      <value>30e3</value>
+    </param>
+    <param>
+      <key>samp_rate</key>
+      <value>200e3</value>
     </param>
   </block>
   <block>
@@ -1240,7 +1103,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(3232, 236)</value>
+      <value>(2648, 252)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1519,7 +1382,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(328, 204)</value>
+      <value>(264, 204)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1578,7 +1441,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1328, 188)</value>
+      <value>(744, 204)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1637,7 +1500,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2984, 236)</value>
+      <value>(2400, 252)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1668,12 +1531,6 @@
       <value>fff</value>
     </param>
   </block>
-  <connection>
-    <source_block_id>analog_const_source_x_0_0</source_block_id>
-    <sink_block_id>blocks_magphase_to_complex_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
   <connection>
     <source_block_id>analog_noise_source_x_0</source_block_id>
     <sink_block_id>blocks_add_xx_0</sink_block_id>
@@ -1723,18 +1580,6 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_magphase_to_complex_0</source_block_id>
-    <sink_block_id>rational_resampler_xxx_0_0_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>custom_circular_accumulator_ff_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_multiply_const_vxx_0_0</source_block_id>
     <sink_block_id>dc_blocker_xx_0</sink_block_id>
     <source_key>0</source_key>
@@ -1759,20 +1604,20 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>custom_circular_accumulator_ff_0</source_block_id>
-    <sink_block_id>blocks_magphase_to_complex_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>1</sink_key>
-  </connection>
-  <connection>
     <source_block_id>dc_blocker_xx_0</source_block_id>
     <sink_block_id>rational_resampler_xxx_0_0_0_0_1_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>fm_modulator_0</source_block_id>
+    <sink_block_id>rational_resampler_xxx_0_0_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>rational_resampler_xxx_0</source_block_id>
-    <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
+    <sink_block_id>fm_modulator_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
