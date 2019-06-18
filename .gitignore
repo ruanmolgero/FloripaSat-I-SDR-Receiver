@@ -1,4 +1,4 @@
 *.pyc
 *.pyo
-gr-custom/build/*
+gr-custom/build/
 !gr-custom/build/make-all-blocks.sh
