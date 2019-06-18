@@ -330,7 +330,11 @@
     </param>
     <param>
       <key>_coordinate</key>
+<<<<<<< HEAD
       <value>(816, 164)</value>
+=======
+      <value>(840, 164)</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>_rotation</key>
@@ -836,7 +840,11 @@
     </param>
     <param>
       <key>_coordinate</key>
+<<<<<<< HEAD
       <value>(560, 228)</value>
+=======
+      <value>(664, 228)</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>_rotation</key>
@@ -981,11 +989,19 @@
     </param>
     <param>
       <key>_enabled</key>
+<<<<<<< HEAD
       <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
       <value>(2256, 248)</value>
+=======
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(2248, 248)</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>_rotation</key>
@@ -993,7 +1009,11 @@
     </param>
     <param>
       <key>id</key>
+<<<<<<< HEAD
       <value>blocks_multiply_xx_1</value>
+=======
+      <value>blocks_multiply_xx_0_1</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>type</key>
@@ -1068,26 +1088,81 @@
     </param>
   </block>
   <block>
+<<<<<<< HEAD
     <key>custom_circular_accumulator_ff</key>
+=======
+    <key>epy_block</key>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <param>
       <key>alias</key>
       <value></value>
     </param>
     <param>
+<<<<<<< HEAD
       <key>comment</key>
       <value></value>
     </param>
     <param>
       <key>affinity</key>
+=======
+      <key>_io_cache</key>
+      <value>('Circular Accumulator', 'blk', [('modulus', '6.283185307179586')], [('0', 'float', 1)], [('0', 'float', 1)], 'arguments to this function show up as parameters in GRC', ['modulus'])</value>
+    </param>
+    <param>
+      <key>_source_code</key>
+      <value>"""
+Embedded Python Blocks:
+
+Each time this file is saved, GRC will instantiate the first class it finds
+to get ports and parameters of your block. The arguments to __init__  will
+be the parameters. All of them are required to have default values!
+"""
+
+import numpy as np
+from gnuradio import gr
+
+
+class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
+
+    def __init__(self, modulus=2*np.pi):  # only default arguments here
+        """arguments to this function show up as parameters in GRC"""
+        gr.sync_block.__init__(
+            self,
+            name="Circular Accumulator",   # will show up in GRC
+            in_sig=[np.float32],
+            out_sig=[np.float32]
+        )
+        self.modulus = modulus
+        self.accum = 0
+
+    def work(self, input_items, output_items):
+        for i in range(0, len(input_items[0])):
+        	self.accum += input_items[0][i]
+        	self.accum = self.accum % self.modulus
+        	output_items[0][i] = self.accum
+        return len(output_items[0])
+</value>
+    </param>
+    <param>
+      <key>comment</key>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
       <value></value>
     </param>
     <param>
       <key>_enabled</key>
+<<<<<<< HEAD
       <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
       <value>(784, 228)</value>
+=======
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(832, 228)</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>_rotation</key>
@@ -1095,6 +1170,7 @@
     </param>
     <param>
       <key>id</key>
+<<<<<<< HEAD
       <value>custom_circular_accumulator_ff_0</value>
     </param>
     <param>
@@ -1104,6 +1180,9 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+=======
+      <value>circular_accumulator</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>modulus</key>
@@ -1236,7 +1315,11 @@
     </param>
     <param>
       <key>fftsize</key>
+<<<<<<< HEAD
       <value>4096</value>
+=======
+      <value>2048</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>_coordinate</key>
@@ -1519,7 +1602,11 @@
     </param>
     <param>
       <key>_coordinate</key>
+<<<<<<< HEAD
       <value>(328, 204)</value>
+=======
+      <value>(448, 204)</value>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     </param>
     <param>
       <key>_rotation</key>
@@ -1682,7 +1769,11 @@
   </connection>
   <connection>
     <source_block_id>analog_sig_source_x_0</source_block_id>
+<<<<<<< HEAD
     <sink_block_id>rational_resampler_xxx_0</sink_block_id>
+=======
+    <sink_block_id>blocks_throttle_0</sink_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1700,7 +1791,11 @@
   </connection>
   <connection>
     <source_block_id>blocks_add_xx_0</source_block_id>
+<<<<<<< HEAD
     <sink_block_id>blocks_multiply_xx_1</sink_block_id>
+=======
+    <sink_block_id>blocks_multiply_xx_0_1</sink_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1712,7 +1807,11 @@
   </connection>
   <connection>
     <source_block_id>blocks_conjugate_cc_0</source_block_id>
+<<<<<<< HEAD
     <sink_block_id>blocks_multiply_xx_1</sink_block_id>
+=======
+    <sink_block_id>blocks_multiply_xx_0_1</sink_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <source_key>0</source_key>
     <sink_key>1</sink_key>
   </connection>
@@ -1730,7 +1829,11 @@
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
+<<<<<<< HEAD
     <sink_block_id>custom_circular_accumulator_ff_0</sink_block_id>
+=======
+    <sink_block_id>circular_accumulator</sink_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1747,19 +1850,37 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
+<<<<<<< HEAD
     <source_block_id>blocks_multiply_xx_1</source_block_id>
+=======
+    <source_block_id>blocks_multiply_xx_0_1</source_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <sink_block_id>blocks_complex_to_arg_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
+<<<<<<< HEAD
     <source_block_id>blocks_wavfile_source_0</source_block_id>
+=======
+    <source_block_id>blocks_throttle_0</source_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <sink_block_id>rational_resampler_xxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
+<<<<<<< HEAD
     <source_block_id>custom_circular_accumulator_ff_0</source_block_id>
+=======
+    <source_block_id>blocks_wavfile_source_0</source_block_id>
+    <sink_block_id>blocks_throttle_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>circular_accumulator</source_block_id>
+>>>>>>> 053b9a9dea1b4ac723883f13a185281f8af400d4
     <sink_block_id>blocks_magphase_to_complex_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
