@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<block>
+  <name>Rect Encoder</name>
+  <key>custom_rect_encoder_bf</key>
+  <category>[Custom]/Symbol Coding</category>
+  <import>import custom</import>
+  <make>custom.rect_encoder_bf($samples_per_symbol)</make>
+
+  <param>
+    <name>Samples per Symbol</name>
+    <key>samples_per_symbol</key>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

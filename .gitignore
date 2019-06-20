@@ -2,3 +2,4 @@
 *.pyo
 gr-custom/build/
 !gr-custom/build/make-all-blocks.sh
+gr-custom/python/.unittests/

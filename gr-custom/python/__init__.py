@@ -32,4 +32,5 @@ except ImportError:
 
 # import any pure python here
 from circular_accumulator_ff import circular_accumulator_ff
+from rect_encoder_bf import rect_encoder_bf
 #

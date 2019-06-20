@@ -18,5 +18,6 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    custom_circular_accumulator_ff.xml DESTINATION share/gnuradio/grc/blocks
+    custom_circular_accumulator_ff.xml
+    custom_rect_encoder_bf.xml DESTINATION share/gnuradio/grc/blocks
 )
