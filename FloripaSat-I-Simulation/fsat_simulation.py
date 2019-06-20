@@ -5,7 +5,7 @@
 # Title: FloripaSat-I Simulation
 # Author: Rafael Alevato && Ruan Lopes
 # Description: Radio simulation for the FloripaSat-I CubeSat
-# Generated: Thu Jun 20 11:34:14 2019
+# Generated: Thu Jun 20 15:01:46 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -30,6 +30,7 @@ from fm_demodulator import fm_demodulator  # grc-generated hier_block
 from gfsk_modulator import gfsk_modulator  # grc-generated hier_block
 from gnuradio import blocks
 from gnuradio import eng_notation
+from gnuradio import filter
 from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
@@ -74,25 +75,143 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 240e3
+        self.symbol_rate = symbol_rate = 1.2e3
+        self.samples_per_symbol = samples_per_symbol = 40
+        self.fs_tx = fs_tx = symbol_rate*samples_per_symbol*25/6
         self.modulation_sensitivity = modulation_sensitivity = 4e3
+        self.fs_rx = fs_rx = fs_tx*6/5
 
         ##################################################
         # Blocks
         ##################################################
+        self.tabs = Qt.QTabWidget()
+        self.tabs_widget_0 = Qt.QWidget()
+        self.tabs_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tabs_widget_0)
+        self.tabs_grid_layout_0 = Qt.QGridLayout()
+        self.tabs_layout_0.addLayout(self.tabs_grid_layout_0)
+        self.tabs.addTab(self.tabs_widget_0, 'Signal Spectrum')
+        self.top_layout.addWidget(self.tabs)
         self.simple_channel_0 = simple_channel(
-            freq_shift=1e3,
-            noise_amplitude=1e-12,
+            freq_shift=2e3,
+            noise_amplitude=1e-6,
             noise_seed=1,
             phase_shift=0.1,
-            samp_rate=samp_rate,
+            samp_rate=fs_tx,
         )
+        self.rational_resampler_xxx_0_0_0_0_1_0 = filter.rational_resampler_fff(
+                interpolation=1,
+                decimation=5,
+                taps=(firdes.low_pass(1,1,0.5/5,0.001)),
+                fractional_bw=None,
+        )
+        self.rational_resampler_xxx_0_0_0_0_0 = filter.rational_resampler_ccf(
+                interpolation=6,
+                decimation=5,
+                taps=(firdes.low_pass(6,1,0.5/6,0.001)),
+                fractional_bw=None,
+        )
+        self.rational_resampler_xxx_0 = filter.rational_resampler_ccf(
+                interpolation=25,
+                decimation=6,
+                taps=(firdes.low_pass(25, 1, 0.5/25, 0.001)),
+                fractional_bw=None,
+        )
+        self.qtgui_freq_sink_x_0_0_0 = qtgui.freq_sink_c(
+        	8192, #size
+        	firdes.WIN_BLACKMAN_hARRIS, #wintype
+        	0, #fc
+        	fs_rx, #bw
+        	"Received Signal", #name
+        	1 #number of inputs
+        )
+        self.qtgui_freq_sink_x_0_0_0.set_update_time(0.10)
+        self.qtgui_freq_sink_x_0_0_0.set_y_axis(-180, 10)
+        self.qtgui_freq_sink_x_0_0_0.set_y_label('Relative Gain', 'dB')
+        self.qtgui_freq_sink_x_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
+        self.qtgui_freq_sink_x_0_0_0.enable_autoscale(False)
+        self.qtgui_freq_sink_x_0_0_0.enable_grid(False)
+        self.qtgui_freq_sink_x_0_0_0.set_fft_average(1.0)
+        self.qtgui_freq_sink_x_0_0_0.enable_axis_labels(True)
+        self.qtgui_freq_sink_x_0_0_0.enable_control_panel(False)
+
+        if not True:
+          self.qtgui_freq_sink_x_0_0_0.disable_legend()
+
+        if "complex" == "float" or "complex" == "msg_float":
+          self.qtgui_freq_sink_x_0_0_0.set_plot_pos_half(not True)
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_freq_sink_x_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_freq_sink_x_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_freq_sink_x_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_freq_sink_x_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_freq_sink_x_0_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_freq_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0_0.pyqwidget(), Qt.QWidget)
+        self.tabs_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_0_0_win, 1, 0, 1, 1)
+        [self.tabs_grid_layout_0.setRowStretch(r,1) for r in range(1,2)]
+        [self.tabs_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
+        self.qtgui_freq_sink_x_0_0 = qtgui.freq_sink_c(
+        	8192, #size
+        	firdes.WIN_BLACKMAN_hARRIS, #wintype
+        	0, #fc
+        	fs_tx, #bw
+        	"Transmitted Signal", #name
+        	1 #number of inputs
+        )
+        self.qtgui_freq_sink_x_0_0.set_update_time(0.10)
+        self.qtgui_freq_sink_x_0_0.set_y_axis(-180, 10)
+        self.qtgui_freq_sink_x_0_0.set_y_label('Relative Gain', 'dB')
+        self.qtgui_freq_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
+        self.qtgui_freq_sink_x_0_0.enable_autoscale(False)
+        self.qtgui_freq_sink_x_0_0.enable_grid(False)
+        self.qtgui_freq_sink_x_0_0.set_fft_average(1.0)
+        self.qtgui_freq_sink_x_0_0.enable_axis_labels(True)
+        self.qtgui_freq_sink_x_0_0.enable_control_panel(False)
+
+        if not True:
+          self.qtgui_freq_sink_x_0_0.disable_legend()
+
+        if "complex" == "float" or "complex" == "msg_float":
+          self.qtgui_freq_sink_x_0_0.set_plot_pos_half(not True)
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_freq_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_freq_sink_x_0_0.set_line_label(i, labels[i])
+            self.qtgui_freq_sink_x_0_0.set_line_width(i, widths[i])
+            self.qtgui_freq_sink_x_0_0.set_line_color(i, colors[i])
+            self.qtgui_freq_sink_x_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_freq_sink_x_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0.pyqwidget(), Qt.QWidget)
+        self.tabs_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_0_win, 0, 0, 1, 1)
+        [self.tabs_grid_layout_0.setRowStretch(r,1) for r in range(0,1)]
+        [self.tabs_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
         	8192, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
-        	samp_rate, #bw
-        	"", #name
+        	symbol_rate*samples_per_symbol*2, #bw
+        	"Demodulated Signal", #name
         	1 #number of inputs
         )
         self.qtgui_freq_sink_x_0.set_update_time(0.10)
@@ -129,45 +248,67 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.tabs_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 2, 0, 1, 1)
+        [self.tabs_grid_layout_0.setRowStretch(r,1) for r in range(2,3)]
+        [self.tabs_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
         self.gfsk_modulator_0 = gfsk_modulator(
             BT=0.5,
             filter_taps=100,
             modulation_sensitivity=modulation_sensitivity,
-            samp_rate=samp_rate,
-            samples_per_symbol=20,
+            symbol_rate=1.2e3,
+            samples_per_symbol=samples_per_symbol,
         )
         self.fm_demodulator_0 = fm_demodulator(
             modulation_sensitivity=modulation_sensitivity,
-            samp_rate=samp_rate,
+            samp_rate=fs_rx,
         )
-        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_char*1, samp_rate,True)
-        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/rpa/Downloads/Telegram Desktop/binary_random.bin', True)
+        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, 48e3,True)
+        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/rpa/code/FloripaSat-I-SDR-Receiver/Binary-Files/random.bin', True)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_file_source_0_0, 0), (self.blocks_throttle_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.gfsk_modulator_0, 0))
-        self.connect((self.fm_demodulator_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.gfsk_modulator_0, 0), (self.simple_channel_0, 0))
-        self.connect((self.simple_channel_0, 0), (self.fm_demodulator_0, 0))
+        self.connect((self.blocks_file_source_0_0, 0), (self.gfsk_modulator_0, 0))
+        self.connect((self.blocks_throttle_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.fm_demodulator_0, 0), (self.rational_resampler_xxx_0_0_0_0_1_0, 0))
+        self.connect((self.gfsk_modulator_0, 0), (self.blocks_throttle_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.simple_channel_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_0, 0), (self.fm_demodulator_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_0, 0), (self.qtgui_freq_sink_x_0_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.simple_channel_0, 0), (self.rational_resampler_xxx_0_0_0_0_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "fsat_simulation")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
-    def get_samp_rate(self):
-        return self.samp_rate
+    def get_symbol_rate(self):
+        return self.symbol_rate
 
-    def set_samp_rate(self, samp_rate):
-        self.samp_rate = samp_rate
-        self.simple_channel_0.set_samp_rate(self.samp_rate)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.gfsk_modulator_0.set_samp_rate(self.samp_rate)
-        self.fm_demodulator_0.set_samp_rate(self.samp_rate)
-        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
+    def set_symbol_rate(self, symbol_rate):
+        self.symbol_rate = symbol_rate
+        self.set_fs_tx(self.symbol_rate*self.samples_per_symbol*25/6)
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol*2)
+
+    def get_samples_per_symbol(self):
+        return self.samples_per_symbol
+
+    def set_samples_per_symbol(self, samples_per_symbol):
+        self.samples_per_symbol = samples_per_symbol
+        self.set_fs_tx(self.symbol_rate*self.samples_per_symbol*25/6)
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol*2)
+        self.gfsk_modulator_0.set_samples_per_symbol(self.samples_per_symbol)
+
+    def get_fs_tx(self):
+        return self.fs_tx
+
+    def set_fs_tx(self, fs_tx):
+        self.fs_tx = fs_tx
+        self.set_fs_rx(self.fs_tx*6/5)
+        self.simple_channel_0.set_samp_rate(self.fs_tx)
+        self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.fs_tx)
 
     def get_modulation_sensitivity(self):
         return self.modulation_sensitivity
@@ -176,6 +317,14 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
         self.modulation_sensitivity = modulation_sensitivity
         self.gfsk_modulator_0.set_modulation_sensitivity(self.modulation_sensitivity)
         self.fm_demodulator_0.set_modulation_sensitivity(self.modulation_sensitivity)
+
+    def get_fs_rx(self):
+        return self.fs_rx
+
+    def set_fs_rx(self, fs_rx):
+        self.fs_rx = fs_rx
+        self.qtgui_freq_sink_x_0_0_0.set_frequency_range(0, self.fs_rx)
+        self.fm_demodulator_0.set_samp_rate(self.fs_rx)
 
 
 def main(top_block_cls=fsat_simulation, options=None):

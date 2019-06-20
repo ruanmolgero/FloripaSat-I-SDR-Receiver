@@ -379,7 +379,7 @@
     </param>
     <param>
       <key>length</key>
-      <value>4096</value>
+      <value>8192</value>
     </param>
     <param>
       <key>long_form</key>
