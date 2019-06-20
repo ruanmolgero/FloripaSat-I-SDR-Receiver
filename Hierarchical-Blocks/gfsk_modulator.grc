@@ -297,7 +297,7 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>samp_rate</value>
+      <value>symbol_rate*samples_per_symbol</value>
     </param>
   </block>
   <block>
@@ -395,7 +395,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>6e3</value>
+      <value>4e3</value>
     </param>
   </block>
   <block>
@@ -500,7 +500,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(352, 12)</value>
+      <value>(312, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -508,11 +508,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>samp_rate</value>
+      <value>samples_per_symbol</value>
     </param>
     <param>
       <key>label</key>
-      <value>Sample Rate</value>
+      <value>Samples per Symbol</value>
     </param>
     <param>
       <key>short_id</key>
@@ -524,7 +524,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>48e3</value>
+      <value>40</value>
     </param>
   </block>
   <block>
@@ -551,11 +551,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>samples_per_symbol</value>
+      <value>symbol_rate</value>
     </param>
     <param>
       <key>label</key>
-      <value>Samples per Symbol</value>
+      <value>Symbol Rate</value>
     </param>
     <param>
       <key>short_id</key>
@@ -567,7 +567,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>20</value>
+      <value>1.2e3</value>
     </param>
   </block>
   <connection>
