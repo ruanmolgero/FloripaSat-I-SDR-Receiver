@@ -24,7 +24,14 @@ from gnuradio import gr
 
 class rect_encoder_bf(gr.interp_block):
     """
-    docstring for block rect_encoder_bf
+    Takes a binary message and transform each digit in a rect pulse (1 for binary 1 and -1 for binary 0). This pulse has the size of "Samples per Symbol" samples. Basically it interpolates the binary message in a rect pulse.
+    
+    Arguments:
+        Samples per Symbol (int): The number of samples per digit
+            in the binary input.
+    
+    Returns:
+        The rect symbols with Samples per Symbol samples per binary digit.
     """
     def __init__(self, samples_per_symbol):
         gr.interp_block.__init__(self,

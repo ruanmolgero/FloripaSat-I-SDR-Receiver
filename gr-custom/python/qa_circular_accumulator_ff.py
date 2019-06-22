@@ -41,7 +41,7 @@ class qa_circular_accumulator_ff (gr_unittest.TestCase):
         self.tb.connect(acc, snk)
         self.tb.run()
         result_data = snk.data()
-        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 6)
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
 
 
 if __name__ == '__main__':
