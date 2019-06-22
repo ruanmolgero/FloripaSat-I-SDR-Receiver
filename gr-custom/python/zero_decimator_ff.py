@@ -46,7 +46,6 @@ class zero_decimator_ff(gr.basic_block):
         self.zero_threshold = zero_threshold
 
     def forecast(self, noutput_items, ninput_items_required):
-        #setup size of input_items[i] for work call
         for i in range(len(ninput_items_required)):
             ninput_items_required[i] = self.zeros_max_interval*noutput_items
 
@@ -63,4 +62,4 @@ class zero_decimator_ff(gr.basic_block):
                     break;
 
         self.consume_each(number_inputs+1)
-        return len(output_items[0])
+        return len(out)

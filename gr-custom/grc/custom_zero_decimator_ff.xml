@@ -4,7 +4,7 @@
   <key>custom_zero_decimator_ff</key>
   <category>[Custom]/Resamplers</category>
   <import>import custom</import>
-  <make>custom.zero_decimator_ff()</make>
+  <make>custom.zero_decimator_ff($zeros_max_interval, $zero_threshold)</make>
 
   <param>
     <name>Zeros Max Interval</name>
