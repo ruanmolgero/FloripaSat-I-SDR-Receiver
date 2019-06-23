@@ -5,7 +5,7 @@
 # Title: FloripaSat-I Simulation
 # Author: Rafael Alevato && Ruan Lopes
 # Description: Radio simulation for the FloripaSat-I CubeSat
-# Generated: Thu Jun 20 15:01:46 2019
+# Generated: Sat Jun 22 17:10:23 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -255,15 +255,15 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
             BT=0.5,
             filter_taps=100,
             modulation_sensitivity=modulation_sensitivity,
-            symbol_rate=1.2e3,
             samples_per_symbol=samples_per_symbol,
+            symbol_rate=1.2e3,
         )
         self.fm_demodulator_0 = fm_demodulator(
             modulation_sensitivity=modulation_sensitivity,
             samp_rate=fs_rx,
         )
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, 48e3,True)
-        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/rpa/code/FloripaSat-I-SDR-Receiver/Binary-Files/random.bin', True)
+        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/cho/code/FloripaSat-I-SDR-Receiver/Binary-Files/preamble_hello.bin', True)
 
         ##################################################
         # Connections
