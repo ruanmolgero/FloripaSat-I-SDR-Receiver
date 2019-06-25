@@ -20,6 +20,8 @@
 install(FILES
     custom_circular_accumulator_ff.xml
     custom_rect_encoder_bf.xml
+    custom_frame_sync_bb.xml
     custom_zero_decimator_ff.xml
-    custom_symbol_sync_ff.xml DESTINATION share/gnuradio/grc/blocks
+    custom_symbol_sync_ff.xml
+    custom_binary_decisor_fb.xml DESTINATION share/gnuradio/grc/blocks
 )

@@ -107,8 +107,6 @@ class symbol_sync_ff(gr.sync_block):
                     elif self.clock_step >= self.max_clock_step:
                         self.clock_step = self.max_clock_step
 
-                    print self.clock_step
-
                     # # Print data to file for analysis
                     # self.sync_data.write(str(in0[i]) + "," + str(out[i])
                     #                   + "," + str(self.sample_buffer[-1])
