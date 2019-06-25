@@ -19,23 +19,29 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-from gnuradio import gr, gr_unittest
-from gnuradio import blocks
-from frame_sync import frame_sync
+import numpy
+from gnuradio import gr
 
-class qa_frame_sync (gr_unittest.TestCase):
+class binary_decisor_fb(gr.sync_block):
+    """
+    docstring for block binary_decisor_fb
+    """
+    def __init__(self):
+        gr.sync_block.__init__(self,
+            name="Binary Decisor",
+            in_sig=[numpy.float32],
+            out_sig=[numpy.int8]
+        )
 
-    def setUp (self):
-        self.tb = gr.top_block ()
+    def work(self, input_items, output_items):
+        in0 = input_items[0]
+        out = output_items[0]
 
-    def tearDown (self):
-        self.tb = None
+        for i in range(len(in0)):
+            if in0[i] >= 0:
+                out[i] = 1
+            else:
+                out[i] = -1
 
-    def test_001_t (self):
-        # set up fg
-        self.tb.run ()
-        # check data
+        return len(out)
 
-
-if __name__ == '__main__':
-    gr_unittest.run(qa_frame_sync, "qa_frame_sync.xml")

@@ -24,13 +24,13 @@ from gnuradio import gr
 from struct import pack
 from os.path import expanduser
 
-class frame_sync(gr.sync_block):
+class frame_sync_bb(gr.sync_block):
     """
-    docstring for block frame_sync
+    docstring for block frame_sync_bb
     """
     def __init__(self, sync_word, threshold, bytes_message_size):
         gr.sync_block.__init__(self,
-            name="frame_sync",
+            name="frame_sync_bb",
             in_sig=[numpy.int8],
             out_sig=[numpy.int8]
         )

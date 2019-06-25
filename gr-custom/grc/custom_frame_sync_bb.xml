@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
   <name>Frame Sync</name>
-  <key>custom_frame_sync</key>
+  <key>custom_frame_sync_bb</key>
   <category>[Custom]/Synchronizers</category>
   <import>import custom</import>
-  <make>custom.frame_sync($sync_word, $threshold, $bytes_message_size)</make>
+  <make>custom.frame_sync_bb($sync_word, $threshold, $bytes_message_size)</make>
 
   <param>
     <name>Sync Word</name>

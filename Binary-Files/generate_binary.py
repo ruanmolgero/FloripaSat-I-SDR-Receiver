@@ -35,13 +35,16 @@ file.write(binary_message)
 file.close()
 
 preamble = b'\xaa\xaa\xaa\xaa\x5d\xe6\x2a\x7e'
-message_size = b'\x00\x00\x90'
-message = "Hello FloripaSat-I"
+message_size = b'\x00\x00\x98'
+# Hello FloripaSat-I
+message = b'\x48\x65\x6C\x6C\x6F\x20\x46\x6C\x6F\x72\x69\x70\x61\x53\x61\x74\x2D\x49\x20'
+padding = b'\xAA\xAA\xAA\xAA'
 binary_message = preamble
 binary_message += message_size
-binary_message += bytearray(message,'utf8')
+binary_message += message
+binary_message += padding
 binary_zeros = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-for i in range(1000):
+for i in range(20):
     binary_message += binary_zeros
 file = open("fsat-hello.bin","wb")
 file.write(binary_message)
