@@ -21,9 +21,9 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-from rect_encoder_bf import rect_encoder_bf
+from binary_decisor_fb import binary_decisor_fb
 
-class qa_rect_encoder_bf (gr_unittest.TestCase):
+class qa_binary_decisor_fb (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -32,17 +32,10 @@ class qa_rect_encoder_bf (gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t (self):
-        src_data = (0, 1, 1, 0, 1, 0)
-        expected_result = (-1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0)
-        src = blocks.vector_source_b(src_data)
-        rect = rect_encoder_bf(3)
-        snk = blocks.vector_sink_f()
-        self.tb.connect(src, rect)
-        self.tb.connect(rect, snk)
-        self.tb.run()
-        result_data = snk.data()
-        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
+        # set up fg
+        self.tb.run ()
+        # check data
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_rect_encoder_bf, "qa_rect_encoder_bf.xml")
+    gr_unittest.run(qa_binary_decisor_fb, "qa_binary_decisor_fb.xml")

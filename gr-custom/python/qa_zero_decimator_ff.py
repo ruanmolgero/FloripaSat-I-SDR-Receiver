@@ -21,9 +21,9 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-from rect_encoder_bf import rect_encoder_bf
+from zero_decimator_ff import zero_decimator_ff
 
-class qa_rect_encoder_bf (gr_unittest.TestCase):
+class qa_zero_decimator_ff (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -32,17 +32,17 @@ class qa_rect_encoder_bf (gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t (self):
-        src_data = (0, 1, 1, 0, 1, 0)
-        expected_result = (-1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0)
-        src = blocks.vector_source_b(src_data)
-        rect = rect_encoder_bf(3)
+        src_data = (0, -1, 0.1, -0.15, 0, 0, 1, 0, 1, 0, 0, 0, -1, -1, 0, 0, 1)
+        expected_result = (-1, 1, 1, -1, -1, 1)
+        src = blocks.vector_source_f(src_data)
+        zero_decimator = zero_decimator_ff(3, 0.2)
         snk = blocks.vector_sink_f()
-        self.tb.connect(src, rect)
-        self.tb.connect(rect, snk)
+        self.tb.connect(src, zero_decimator)
+        self.tb.connect(zero_decimator, snk)
         self.tb.run()
         result_data = snk.data()
         self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_rect_encoder_bf, "qa_rect_encoder_bf.xml")
+    gr_unittest.run(qa_zero_decimator_ff, "qa_zero_decimator_ff.xml")

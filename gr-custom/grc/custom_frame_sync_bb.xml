@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<block>
+  <name>Frame Sync</name>
+  <key>custom_frame_sync_bb</key>
+  <category>[Custom]/Synchronizers</category>
+  <import>import custom</import>
+  <make>custom.frame_sync_bb($sync_word, $threshold, $bytes_message_size)</make>
+
+  <param>
+    <name>Sync Word</name>
+    <key>sync_word</key>
+    <type>int_vector</type>
+  </param>
+
+  <param>
+    <name>Correlation Threshold</name>
+    <key>threshold</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Bytes Message Size</name>
+    <key>bytes_message_size</key>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>

@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Fm Simulation
-# Generated: Tue Jun 18 16:41:20 2019
+# Generated: Thu Jun 20 15:04:17 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -80,7 +80,7 @@ class fm_simulation(gr.top_block, Qt.QWidget):
         self.kf = kf = 30e3
         self.fs_tx = fs_tx = samp_rate*25/6
         self.gain_FM = gain_FM = 2*pi*kf / fs_tx
-        self.fs_SDR = fs_SDR = samp_rate*5
+        self.fs_rx = fs_rx = samp_rate*5
         self.freq_shift = freq_shift = 1e3
 
         ##################################################
@@ -91,10 +91,10 @@ class fm_simulation(gr.top_block, Qt.QWidget):
         self.top_layout.addWidget(self._freq_shift_win)
         self.simple_channel_0 = simple_channel(
             freq_shift=freq_shift,
-            phase_shift=0,
-            samp_rate=240e3,
             noise_amplitude=0,
             noise_seed=0,
+            phase_shift=0,
+            samp_rate=240e3,
         )
         self.rational_resampler_xxx_0_0_0_0_1_0 = filter.rational_resampler_fff(
                 interpolation=1,
@@ -119,7 +119,7 @@ class fm_simulation(gr.top_block, Qt.QWidget):
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
         	samp_rate, #bw
-        	"Antes", #name
+        	"Demodulated Signal", #name
         	1 #number of inputs
         )
         self.qtgui_freq_sink_x_0_1_0.set_update_time(0.10)
@@ -159,11 +159,11 @@ class fm_simulation(gr.top_block, Qt.QWidget):
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_1_0_win)
         self.fm_modulator_0 = fm_modulator(
             modulation_sensitivity=30e3,
-            samp_rate=200e3,
+            samp_rate=fs_tx,
         )
         self.fm_demodulator_0 = fm_demodulator(
             modulation_sensitivity=30e3,
-            samp_rate=240e3,
+            samp_rate=fs_rx,
         )
         self.audio_sink_0 = audio.sink(samp_rate, '', True)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 440, 0.25, 0)
@@ -190,9 +190,9 @@ class fm_simulation(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_freq_sink_x_0_1_0.set_frequency_range(0, self.samp_rate)
         self.set_fs_tx(self.samp_rate*25/6)
-        self.set_fs_SDR(self.samp_rate*5)
+        self.set_fs_rx(self.samp_rate*5)
+        self.qtgui_freq_sink_x_0_1_0.set_frequency_range(0, self.samp_rate)
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
 
     def get_pi(self):
@@ -215,6 +215,7 @@ class fm_simulation(gr.top_block, Qt.QWidget):
     def set_fs_tx(self, fs_tx):
         self.fs_tx = fs_tx
         self.set_gain_FM(2*self.pi*self.kf / self.fs_tx)
+        self.fm_modulator_0.set_samp_rate(self.fs_tx)
 
     def get_gain_FM(self):
         return self.gain_FM
@@ -222,11 +223,12 @@ class fm_simulation(gr.top_block, Qt.QWidget):
     def set_gain_FM(self, gain_FM):
         self.gain_FM = gain_FM
 
-    def get_fs_SDR(self):
-        return self.fs_SDR
+    def get_fs_rx(self):
+        return self.fs_rx
 
-    def set_fs_SDR(self, fs_SDR):
-        self.fs_SDR = fs_SDR
+    def set_fs_rx(self, fs_rx):
+        self.fs_rx = fs_rx
+        self.fm_demodulator_0.set_samp_rate(self.fs_rx)
 
     def get_freq_shift(self):
         return self.freq_shift

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<block>
+  <name>Zero Decimator</name>
+  <key>custom_zero_decimator_ff</key>
+  <category>[Custom]/Resamplers</category>
+  <import>import custom</import>
+  <make>custom.zero_decimator_ff($zeros_max_interval, $zero_threshold)</make>
+
+  <param>
+    <name>Zeros Max Interval</name>
+    <key>zeros_max_interval</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Zero Threshold</name>
+    <key>zero_threshold</key>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>
