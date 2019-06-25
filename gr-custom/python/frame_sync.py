@@ -20,9 +20,9 @@
 # 
 
 import numpy
-import bitarray
 from gnuradio import gr
 from struct import pack
+from os.path import expanduser
 
 class frame_sync(gr.sync_block):
     """
@@ -31,71 +31,66 @@ class frame_sync(gr.sync_block):
     def __init__(self, sync_word, threshold, bytes_message_size):
         gr.sync_block.__init__(self,
             name="frame_sync",
-            in_sig=[numpy.float32],
-            out_sig=[numpy.float32]
+            in_sig=[numpy.int8],
+            out_sig=[numpy.int8]
         )
-        #self.sync_word = [1,-1,1,-1, 1,-1,1,-1, 1,-1,1,-1, 1,-1,1,-1, \
-        #                 -1,1,-1,1, 1,1,-1,1, 1,1,1,-1, -1,1,1,-1 -1,-1,1,-1, 1,-1,1,-1, -1,1,1,1, 1,1,1,-1]
-        #sync_word = [1,0,1,0,1,0,1,0,1,0,1,0]
         self.sync_word = [2*x - 1 for x in sync_word]
         self.threshold = threshold
         self.bits_message_size = 8*bytes_message_size
         self.delay = 0
-        self.correlation = 0
-        self.multiplication_buffer = []
         self.message_length_string = ""
         self.message_length_int = 0
         self.message = ""
-
+        self.detected = False
+        self.input_buffer = []
+        self.home = expanduser("~")
         # Clean old file
-        self.file = open("message.bin", "wb")
-        # Open file for writing
-        self.file = open("message.bin", "ab")
+        message_file = open(self.home + "/code/message.bin", "wb")
+        message_file.close()
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
         out = output_items[0]
 
         for i in range(len(in0)):
-            # Delay for filling the buffers
+            self.input_buffer.append(in0[i])
+            # Delay for filling the buffer
             if self.delay < (len(self.sync_word) - 1):
-                self.multiplication_buffer.append(in0[i]*sync_word[i])
-                self.correlation += multiplication_buffer[-1]
                 out[i] = 0
                 self.delay += 1
             else:
-                self.multiplication_buffer.append(in0[i]*sync_word[i])
-                self.correlation += multiplication_buffer[-1]
-
-                if (not detected):
+                if (not self.detected):
                     out[i] = 0
-                    if self.correlation >= self.threshold:
-                        detected = True
+                    correlation = 0
+                    sync_word_size = len(self.sync_word)
+                    for j in range(sync_word_size):
+                        correlation += self.sync_word[j] * self.input_buffer[j-sync_word_size]
+                    if correlation >= self.threshold:
+                        self.detected = True
                 else:
                     out[i] = in0[i]
                     if in0[i] < 0:
                         in0[i] = 0
-
-                    if(len(message_length_string) < bits_message_size):
-                        self.message_length_string += str(in0[i])
-                        if (len(message_length_string) == bits_message_size):
-                            message_length_int = int(message_length_string, 2)
+                    if(len(self.message_length_string) < self.bits_message_size):
+                        self.message_length_string += str(int(in0[i]))
+                        if (len(self.message_length_string) == self.bits_message_size):
+                            self.message_length_int = int(self.message_length_string, 2)
                     else:
-                        if(len(message) < message_length_int):
-                            self.message += str(in0[i])
+                        if(len(self.message) < self.message_length_int):
+                            self.message += str(int(in0[i]))
                         else:
-                            number_bytes = len(self.messsage) % 8
-                            for i in range(number_bytes):
-                                self.file.write(pack('i', int(self.message[i*8: i*8+8], 2)))
-                            self.file.write(pack('i', int(self.message[number_bytes:], 2)))
+                            # Open file for writing
+                            message_file = open(self.home + "/code/message.bin", "ab")
+                            number_bytes = int(len(self.message) / 8)
+                            for j in range(number_bytes):
+                                message_file.write(pack('i', int(self.message[j*8: j*8+8], 2)))
+                            if (len(self.message) % 8) > 0:
+                                message_file.write(pack('i', int(self.message[number_bytes*8:], 2)))
+                            message_file.close()
                             self.detected = False
                             self.message = ""
                             self.message_length_string = ""
                             self.message_length_int = 0
-
-                self.correlation += (-1)*multiplication_buffer[0]
-                self.multiplication_buffer.pop(0)
-
-        out[:] = in0
-        return len(output_items[0])
+                self.input_buffer.pop(0)
+        return len(out)
 

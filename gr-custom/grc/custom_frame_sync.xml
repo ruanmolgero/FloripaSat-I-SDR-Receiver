@@ -9,11 +9,11 @@
   <param>
     <name>Sync Word</name>
     <key>sync_word</key>
-    <type>byte_vector</type>
+    <type>int_vector</type>
   </param>
 
   <param>
-    <name>Threshold</name>
+    <name>Correlation Threshold</name>
     <key>threshold</key>
     <type>int</type>
   </param>
@@ -26,11 +26,11 @@
 
   <sink>
     <name>in</name>
-    <type>float</type>
+    <type>byte</type>
   </sink>
 
   <source>
     <name>out</name>
-    <type>float</type>
+    <type>byte</type>
   </source>
 </block>
