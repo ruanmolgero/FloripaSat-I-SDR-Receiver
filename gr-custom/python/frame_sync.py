@@ -68,7 +68,7 @@ class frame_sync(gr.sync_block):
                 self.multiplication_buffer.append(in0[i]*sync_word[i])
                 self.correlation += multiplication_buffer[-1]
 
-                if (!detected):
+                if (not detected):
                     out[i] = 0
                     if self.correlation >= self.threshold:
                         detected = True

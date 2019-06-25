@@ -34,4 +34,6 @@ except ImportError:
 from circular_accumulator_ff import circular_accumulator_ff
 from rect_encoder_bf import rect_encoder_bf
 from frame_sync import frame_sync
+from zero_decimator_ff import zero_decimator_ff
+from symbol_sync_ff import symbol_sync_ff
 #

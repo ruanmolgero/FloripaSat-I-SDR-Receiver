@@ -5,7 +5,7 @@
 # Title: FloripaSat-I Simulation
 # Author: Rafael Alevato && Ruan Lopes
 # Description: Radio simulation for the FloripaSat-I CubeSat
-# Generated: Sat Jun 22 17:10:23 2019
+# Generated: Mon Jun 24 19:28:24 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -37,6 +37,7 @@ from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
 from simple_channel import simple_channel  # grc-generated hier_block
+import custom
 import numpy
 import sip
 from gnuradio import qtgui
@@ -89,7 +90,12 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
         self.tabs_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tabs_widget_0)
         self.tabs_grid_layout_0 = Qt.QGridLayout()
         self.tabs_layout_0.addLayout(self.tabs_grid_layout_0)
-        self.tabs.addTab(self.tabs_widget_0, 'Signal Spectrum')
+        self.tabs.addTab(self.tabs_widget_0, 'Spectrum')
+        self.tabs_widget_1 = Qt.QWidget()
+        self.tabs_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tabs_widget_1)
+        self.tabs_grid_layout_1 = Qt.QGridLayout()
+        self.tabs_layout_1.addLayout(self.tabs_grid_layout_1)
+        self.tabs.addTab(self.tabs_widget_1, 'Time')
         self.top_layout.addWidget(self.tabs)
         self.simple_channel_0 = simple_channel(
             freq_shift=2e3,
@@ -116,6 +122,56 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
                 taps=(firdes.low_pass(25, 1, 0.5/25, 0.001)),
                 fractional_bw=None,
         )
+        self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
+        	3000, #size
+        	symbol_rate*samples_per_symbol, #samp_rate
+        	"Sampled Signal", #name
+        	2 #number of inputs
+        )
+        self.qtgui_time_sink_x_0_0.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_0.set_y_axis(-1.2, 1.2)
+
+        self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
+
+        self.qtgui_time_sink_x_0_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_0.enable_autoscale(False)
+        self.qtgui_time_sink_x_0_0.enable_grid(False)
+        self.qtgui_time_sink_x_0_0.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_0.enable_control_panel(False)
+        self.qtgui_time_sink_x_0_0.enable_stem_plot(False)
+
+        if not True:
+          self.qtgui_time_sink_x_0_0.disable_legend()
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "blue"]
+        styles = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        markers = [0, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in xrange(2):
+            if len(labels[i]) == 0:
+                self.qtgui_time_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_time_sink_x_0_0.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_0.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_0.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_0.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_0.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
+        self.tabs_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win, 1, 0, 1, 1)
+        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(1,2)]
+        [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_freq_sink_x_0_0_0 = qtgui.freq_sink_c(
         	8192, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -210,7 +266,7 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
         	8192, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
         	0, #fc
-        	symbol_rate*samples_per_symbol*2, #bw
+        	symbol_rate*samples_per_symbol, #bw
         	"Demodulated Signal", #name
         	1 #number of inputs
         )
@@ -252,7 +308,7 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
         [self.tabs_grid_layout_0.setRowStretch(r,1) for r in range(2,3)]
         [self.tabs_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
         self.gfsk_modulator_0 = gfsk_modulator(
-            BT=0.5,
+            BT=0.25,
             filter_taps=100,
             modulation_sensitivity=modulation_sensitivity,
             samples_per_symbol=samples_per_symbol,
@@ -262,21 +318,25 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
             modulation_sensitivity=modulation_sensitivity,
             samp_rate=fs_rx,
         )
+        self.custom_symbol_sync_ff_0 = custom.symbol_sync_ff(39, 80, 1/(symbol_rate*samples_per_symbol), 0.01*symbol_rate*samples_per_symbol, 1, 3.22)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, 48e3,True)
-        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/cho/code/FloripaSat-I-SDR-Receiver/Binary-Files/preamble_hello.bin', True)
+        self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/rpa/code/FloripaSat-I-SDR-Receiver/Binary-Files/fsat-hello.bin', True)
 
         ##################################################
         # Connections
         ##################################################
         self.connect((self.blocks_file_source_0_0, 0), (self.gfsk_modulator_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.custom_symbol_sync_ff_0, 0), (self.qtgui_time_sink_x_0_0, 0))
         self.connect((self.fm_demodulator_0, 0), (self.rational_resampler_xxx_0_0_0_0_1_0, 0))
         self.connect((self.gfsk_modulator_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.simple_channel_0, 0))
         self.connect((self.rational_resampler_xxx_0_0_0_0_0, 0), (self.fm_demodulator_0, 0))
         self.connect((self.rational_resampler_xxx_0_0_0_0_0, 0), (self.qtgui_freq_sink_x_0_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.custom_symbol_sync_ff_0, 0))
         self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.rational_resampler_xxx_0_0_0_0_1_0, 0), (self.qtgui_time_sink_x_0_0, 1))
         self.connect((self.simple_channel_0, 0), (self.rational_resampler_xxx_0_0_0_0_0, 0))
 
     def closeEvent(self, event):
@@ -290,7 +350,8 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
     def set_symbol_rate(self, symbol_rate):
         self.symbol_rate = symbol_rate
         self.set_fs_tx(self.symbol_rate*self.samples_per_symbol*25/6)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol*2)
+        self.qtgui_time_sink_x_0_0.set_samp_rate(self.symbol_rate*self.samples_per_symbol)
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol)
 
     def get_samples_per_symbol(self):
         return self.samples_per_symbol
@@ -298,7 +359,8 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
     def set_samples_per_symbol(self, samples_per_symbol):
         self.samples_per_symbol = samples_per_symbol
         self.set_fs_tx(self.symbol_rate*self.samples_per_symbol*25/6)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol*2)
+        self.qtgui_time_sink_x_0_0.set_samp_rate(self.symbol_rate*self.samples_per_symbol)
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol)
         self.gfsk_modulator_0.set_samples_per_symbol(self.samples_per_symbol)
 
     def get_fs_tx(self):

@@ -24,7 +24,7 @@ from gnuradio import gr
 
 class circular_accumulator_ff(gr.sync_block):
     """
-    This blocks accumulates each sample and do a modulus with the number given. It applies the following equation: y[n] = (y[n-1] + x[n]) mod number.
+    Accumulates each sample and do a modulus with the number given. It applies the following equation: y[n] = (y[n-1] + x[n]) mod number.
     
     Arguments:
         Modulus (float): The number to apply the mod function

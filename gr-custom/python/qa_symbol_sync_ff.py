@@ -21,9 +21,10 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-from rect_encoder_bf import rect_encoder_bf
+from symbol_sync_ff import symbol_sync_ff
+import numpy as np
 
-class qa_rect_encoder_bf (gr_unittest.TestCase):
+class qa_symbol_sync_ff (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -32,17 +33,23 @@ class qa_rect_encoder_bf (gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t (self):
-        src_data = (0, 1, 1, 0, 1, 0)
-        expected_result = (-1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0)
-        src = blocks.vector_source_b(src_data)
-        rect = rect_encoder_bf(3)
+        xt = np.arange(0*np.pi, 100*np.pi, 0.1)
+        src_data = np.zeros(len(xt))
+        for i in range(100):
+            x = np.arange((i - 100)*np.pi, i*np.pi, 0.1)
+            if np.random.rand() > 0.5:
+                src_data += np.sinc(x)
+            else:
+                src_data -= np.sinc(x)
+        src = blocks.vector_source_f(src_data)
+        sym_sync = symbol_sync_ff(31, 50, (1/200000), 0.05, 0.707, 3.22)
         snk = blocks.vector_sink_f()
-        self.tb.connect(src, rect)
-        self.tb.connect(rect, snk)
+        self.tb.connect(src, sym_sync)
+        self.tb.connect(sym_sync, snk)
         self.tb.run()
         result_data = snk.data()
-        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
+        print result_data
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_rect_encoder_bf, "qa_rect_encoder_bf.xml")
+    gr_unittest.run(qa_symbol_sync_ff, "qa_symbol_sync_ff.xml")
