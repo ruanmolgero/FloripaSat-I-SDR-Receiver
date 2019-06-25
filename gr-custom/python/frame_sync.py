@@ -37,10 +37,9 @@ class frame_sync(gr.sync_block):
         #self.sync_word = [1,-1,1,-1, 1,-1,1,-1, 1,-1,1,-1, 1,-1,1,-1, \
         #                 -1,1,-1,1, 1,1,-1,1, 1,1,1,-1, -1,1,1,-1 -1,-1,1,-1, 1,-1,1,-1, -1,1,1,1, 1,1,1,-1]
         #sync_word = [1,0,1,0,1,0,1,0,1,0,1,0]
-        self.sync_word = sync_word
+        self.sync_word = [2*x - 1 for x in sync_word]
         self.threshold = threshold
         self.bits_message_size = 8*bytes_message_size
-        self.sync_word_size = len(self.sync_word)
         self.delay = 0
         self.correlation = 0
         self.multiplication_buffer = []
@@ -59,7 +58,7 @@ class frame_sync(gr.sync_block):
 
         for i in range(len(in0)):
             # Delay for filling the buffers
-            if self.delay < (self.sync_word_size-1):
+            if self.delay < (len(self.sync_word) - 1):
                 self.multiplication_buffer.append(in0[i]*sync_word[i])
                 self.correlation += multiplication_buffer[-1]
                 out[i] = 0
@@ -96,7 +95,6 @@ class frame_sync(gr.sync_block):
 
                 self.correlation += (-1)*multiplication_buffer[0]
                 self.multiplication_buffer.pop(0)
-
 
         out[:] = in0
         return len(output_items[0])
