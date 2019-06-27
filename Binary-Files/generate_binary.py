@@ -1,10 +1,14 @@
 binary_message = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-binary_message += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-binary_message += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-binary_message += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-binary_message += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-binary_message += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+for i in range(20):
+    binary_message += binary_message
 file = open("zeros.bin","wb")
+file.write(binary_message)
+file.close()
+
+binary_message = b'\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA'
+for i in range(20):
+    binary_message += binary_message
+file = open("ones_zeros.bin","wb")
 file.write(binary_message)
 file.close()
 
