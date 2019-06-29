@@ -32,9 +32,17 @@ class qa_binary_decisor_fb (gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t (self):
-        # set up fg
-        self.tb.run ()
-        # check data
+        src_data = (0, 0.001, 0.002, 0.5, -0.001, -20, 100, 1, -1)
+        expected_result = (1, 1, 1, 1, -1, -1, 1, 1, -1)
+        src = blocks.vector_source_f(src_data)
+        bin_dec = binary_decisor_fb()
+        snk = blocks.vector_sink_b()
+        self.tb.connect(src, bin_dec)
+        self.tb.connect(bin_dec, snk)
+        self.tb.run()
+        result_data = tuple([int((256-x)*-1) if x > 127 else int(x) for x in snk.data()])
+        if result_data != expected_result:
+            print "Error! Result != Expected Result"
 
 
 if __name__ == '__main__':

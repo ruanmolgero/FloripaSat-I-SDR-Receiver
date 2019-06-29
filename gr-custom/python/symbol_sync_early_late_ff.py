@@ -22,9 +22,9 @@
 import numpy
 from gnuradio import gr
 
-class symbol_sync_gardner_ff(gr.sync_block):
+class symbol_sync_early_late_ff(gr.sync_block):
     """
-    Samples the input signal at the best timing by sinchronizing with the receiving signal. It uses Gardner TED method for synchronization. More about Gardner method at https://www.nutaq.com/blog/symbol-timing-recovery-methods-digital-iq-demodulator.
+    Samples the input signal at the best timing by sinchronizing with the receiving signal. It uses Early-Late TED method for synchronization. More about Early-Late method at https://www.nutaq.com/blog/symbol-timing-recovery-methods-digital-iq-demodulator.
     
     Arguments:
         Samples per Symbol (int): Expected number of samples per symbol.
@@ -45,7 +45,7 @@ class symbol_sync_gardner_ff(gr.sync_block):
     """
     def __init__(self, samples_per_symbol, max_samples_per_symbol, sample_period, bandwidth, damping_ratio, loop_gain):
         gr.sync_block.__init__(self,
-            name="symbol_sync_gardner_ff",
+            name="symbol_sync_early_late_ff",
             in_sig=[numpy.float32],
             out_sig=[numpy.float32]
         )
@@ -76,9 +76,10 @@ class symbol_sync_gardner_ff(gr.sync_block):
                 if self.clock_accumulator >= self.samples_per_symbol:
                     # Gardner Method
                     self.clock_accumulator %= self.samples_per_symbol
-                    error = self.sample_buffer[-1] - self.sample_buffer[-self.samples_per_symbol - 1]
-                    error *= self.sample_buffer[-int(self.samples_per_symbol/2) - 1]
-                    out[i] = self.sample_buffer[-1]
+                    error = self.sample_buffer[-int(self.samples_per_symbol/2) - 1] - self.sample_buffer[-int(3*self.samples_per_symbol/2) - 1]
+                    error *= self.sample_buffer[-self.samples_per_symbol - 1]
+                    error *= -1
+                    out[i] = self.sample_buffer[-self.samples_per_symbol - 1]
                     self.loop_filter_accumulator += error * self.LOOP_FILTER_INTEGRATOR
                     self.clock_step = 1 + self.loop_filter_accumulator + (error*self.LOOP_FILTER_PROPORTIONAL)
 

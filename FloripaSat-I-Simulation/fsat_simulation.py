@@ -5,7 +5,7 @@
 # Title: FloripaSat-I Simulation
 # Author: Rafael Alevato && Ruan Lopes
 # Description: Radio simulation for the FloripaSat-I CubeSat
-# Generated: Sat Jun 29 00:40:58 2019
+# Generated: Sat Jun 29 01:47:22 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -124,7 +124,7 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
                 fractional_bw=None,
         )
         self.qtgui_time_sink_x_0_0_0_0 = qtgui.time_sink_f(
-        	7000, #size
+        	11200, #size
         	symbol_rate*samples_per_symbol, #samp_rate
         	"Signal", #name
         	2 #number of inputs
@@ -174,7 +174,7 @@ class fsat_simulation(gr.top_block, Qt.QWidget):
         [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(0,1)]
         [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
-        	900, #size
+        	280, #size
         	symbol_rate*samples_per_symbol, #samp_rate
         	"Message", #name
         	1 #number of inputs
