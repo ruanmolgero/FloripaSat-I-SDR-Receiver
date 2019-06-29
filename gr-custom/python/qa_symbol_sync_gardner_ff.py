@@ -21,10 +21,10 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-from symbol_sync_ff import symbol_sync_ff
+from symbol_sync_gardner_ff import symbol_sync_gardner_ff
 import numpy as np
 
-class qa_symbol_sync_ff (gr_unittest.TestCase):
+class qa_symbol_sync_gardner_ff (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -42,7 +42,7 @@ class qa_symbol_sync_ff (gr_unittest.TestCase):
             else:
                 src_data -= np.sinc(x)
         src = blocks.vector_source_f(src_data)
-        sym_sync = symbol_sync_ff(31, 50, (1/200000), 0.05, 0.707, 3.22)
+        sym_sync = symbol_sync_gardner_ff(31, 50, (1/200000), 0.05, 0.707, 3.22)
         snk = blocks.vector_sink_f()
         self.tb.connect(src, sym_sync)
         self.tb.connect(sym_sync, snk)
@@ -52,4 +52,4 @@ class qa_symbol_sync_ff (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_symbol_sync_ff, "qa_symbol_sync_ff.xml")
+    gr_unittest.run(qa_symbol_sync_gardner_ff, "qa_symbol_sync_gardner_ff.xml")

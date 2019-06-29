@@ -24,7 +24,7 @@ from gnuradio import gr
 # # Import for printing data to file
 # from os.path import expanduser
 
-class symbol_sync_ff(gr.sync_block):
+class symbol_sync_gardner_ff(gr.sync_block):
     """
     Samples the input signal at the best timing by sinchronizing with the receiving signal.
     
@@ -47,29 +47,25 @@ class symbol_sync_ff(gr.sync_block):
     """
     def __init__(self, samples_per_symbol, max_samples_per_symbol, sample_period, bandwidth, damping_ratio, loop_gain):
         gr.sync_block.__init__(self,
-            name="symbol_sync_ff",
+            name="symbol_sync_gardner_ff",
             in_sig=[numpy.float32],
             out_sig=[numpy.float32]
         )
-        self.clock_period = samples_per_symbol
+        self.samples_per_symbol = samples_per_symbol
         self.clock_step = 1
         self.clock_accumulator = 0
         self.max_samples_per_symbol = max_samples_per_symbol
         self.sample_buffer = []
         self.delay = 0
-        ETA = (bandwidth*sample_period) / (damping_ratio + (1/(4*damping_ratio)))
-        self.LOOP_FILTER_PROPORTIONAL = (4*ETA*damping_ratio) / (1 + 2*damping_ratio*ETA + ETA**2)
-        self.LOOP_FILTER_INTEGRATOR = (4*ETA**2) / (1 + 2*damping_ratio*ETA + ETA**2)
+        ETA = 1 / (damping_ratio + (1/(4*damping_ratio)))
+        self.LOOP_FILTER_PROPORTIONAL = loop_gain*(4*damping_ratio/ETA)*(bandwidth*sample_period)
+        self.LOOP_FILTER_INTEGRATOR = loop_gain*(4/(ETA)**2)*(bandwidth*sample_period)**2
         self.loop_filter_accumulator = 0
-
-        # Add limit to clock_step because this implementation is diverging
-        self.min_clock_step = float(self.clock_period) / float(self.max_samples_per_symbol)
-        self.max_clock_step = float(self.max_samples_per_symbol) / float(self.clock_period)
 
         # # Print data to file for analysis
         # home = expanduser("~")
         # self.sync_data = open(home + "/code/symbol_sync_data.csv", "w")
-        # self.sync_data.write("Input,Output,Last Sample,Sample 1T,Sample 1/2T,Error,Clock Step,Loop Filter Accumulator\n")
+        # self.sync_data.write("Input,Output,Sample 1/2T,Sample 1T,Sample 3/2T,Error,Clock Step,Loop Filter Result,Loop Filter Accumulator\n")
         # self.sync_data = open(home + "/code/symbol_sync_data.csv", "a")
 
     def work(self, input_items, output_items):
@@ -78,47 +74,45 @@ class symbol_sync_ff(gr.sync_block):
         
         for i in range(len(in0)):
             # Delay for filling sample_buffer
-            if self.delay < (2*self.max_samples_per_symbol-1):
+            if self.delay < (self.max_samples_per_symbol-1):
                 self.sample_buffer.append(in0[i])
                 self.delay += 1
                 out[i] = 0
                 # # Print data to file for analysis
-                # self.sync_data.write(str(in0[i]) + "," + str(out[i]) + ",0,0,0,0,0,0\n")
+                # self.sync_data.write(str(in0[i]) + "," + str(out[i]) + ",0,0,0,0,0,0,0\n")
             else:
                 self.sample_buffer.append(in0[i])
                 self.clock_accumulator += self.clock_step
-                if self.clock_accumulator > self.clock_period:
-                    # Original Code. Currently diverging.
-                    # self.clock_accumulator = 0
-                    # error = self.sample_buffer[-1] - self.sample_buffer[-self.clock_period]
-                    # error *= self.sample_buffer[-int(self.clock_period/2)]
-                    # out[i] = self.sample_buffer[-int(self.clock_period/2)]
-                    # self.loop_filter_accumulator += error * self.LOOP_FILTER_INTEGRATOR
-                    # loop_filter_result = self.loop_filter_accumulator + (error*self.LOOP_FILTER_PROPORTIONAL)
-                    # self.clock_step -= loop_filter_result
+                if self.clock_accumulator >= self.samples_per_symbol:
+                    # Gardner Method
+                    self.clock_accumulator %= self.samples_per_symbol
+                    error = self.sample_buffer[-1] - self.sample_buffer[-self.samples_per_symbol - 1]
+                    error *= self.sample_buffer[-int(self.samples_per_symbol/2) - 1]
+                    out[i] = self.sample_buffer[-1]
+                    self.loop_filter_accumulator += error * self.LOOP_FILTER_INTEGRATOR
+                    self.clock_step = 1 + self.loop_filter_accumulator + (error*self.LOOP_FILTER_PROPORTIONAL)
 
-                    # Sample time hard coded
-                    self.clock_accumulator = 0
-                    out[i] = self.sample_buffer[-30]
-
-                    # Add limit to clock_step because this implementation is diverging
-                    if self.clock_step <= self.min_clock_step:
-                        self.clock_step = self.min_clock_step
-                    elif self.clock_step >= self.max_clock_step:
-                        self.clock_step = self.max_clock_step
+                    # Add warning to clock step too low or too high
+                    if self.clock_step < 0.6:
+                        self.clock_step = 0.6
+                        print "Clock Step Too Low!!!"
+                    elif self.clock_step > 1.7:
+                        self.clock_step = 1.7
+                        print "Clock Step Too High!!!"
 
                     # # Print data to file for analysis
                     # self.sync_data.write(str(in0[i]) + "," + str(out[i])
-                    #                   + "," + str(self.sample_buffer[-1])
-                    #                   + "," + str(self.sample_buffer[-self.clock_period])
-                    #                   + "," + str(self.sample_buffer[-int(self.clock_period/2)])
+                    #                   + "," + str(self.sample_buffer[-int(1*self.samples_per_symbol/2) - 1])
+                    #                   + "," + str(self.sample_buffer[-self.samples_per_symbol - 1])
+                    #                   + "," + str(self.sample_buffer[-int(3*self.samples_per_symbol/2) - 1])
                     #                   + "," + str(error)
                     #                   + "," + str(self.clock_step)
+                    #                   + "," + str(loop_filter_result)
                     #                   + "," + str(self.loop_filter_accumulator) + "\n")
                 else:
                     out[i] = 0
                     # # Print data to file for analysis
-                    # self.sync_data.write(str(in0[i]) + "," + str(out[i]) + ",0,0,0,0,0,0\n")
+                    # self.sync_data.write(str(in0[i]) + "," + str(out[i]) + ",0,0,0,0,0,0,0\n")
                 self.sample_buffer.pop(0)
 
         return len(out)
