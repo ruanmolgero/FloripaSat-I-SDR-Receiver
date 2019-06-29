@@ -577,7 +577,7 @@
     </param>
   </block>
   <block>
-    <key>custom_symbol_sync_gardner_ff</key>
+    <key>custom_symbol_sync_early_late_ff</key>
     <param>
       <key>bandwidth</key>
       <value>0.01*sample_rate</value>
@@ -604,7 +604,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2368, 252)</value>
+      <value>(2352, 252)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -612,7 +612,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>custom_symbol_sync_gardner_ff_0</value>
+      <value>custom_symbol_sync_early_late_ff_0</value>
     </param>
     <param>
       <key>loop_gain</key>
@@ -624,7 +624,7 @@
     </param>
     <param>
       <key>max_samples_per_symbol</key>
-      <value>2*samples_per_symbol</value>
+      <value>3*samples_per_symbol</value>
     </param>
     <param>
       <key>minoutbuf</key>
@@ -2071,7 +2071,7 @@
     </param>
     <param>
       <key>size</key>
-      <value>900</value>
+      <value>280</value>
     </param>
     <param>
       <key>srate</key>
@@ -2438,7 +2438,7 @@
     </param>
     <param>
       <key>size</key>
-      <value>11518</value>
+      <value>11200</value>
     </param>
     <param>
       <key>srate</key>
@@ -2490,11 +2490,11 @@
     </param>
     <param>
       <key>ymax</key>
-      <value>2</value>
+      <value>1.2</value>
     </param>
     <param>
       <key>ymin</key>
-      <value>-2</value>
+      <value>-1.2</value>
     </param>
   </block>
   <block>
@@ -2891,13 +2891,13 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>custom_symbol_sync_gardner_ff_0</source_block_id>
+    <source_block_id>custom_symbol_sync_early_late_ff_0</source_block_id>
     <sink_block_id>custom_zero_decimator_ff_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>custom_symbol_sync_gardner_ff_0</source_block_id>
+    <source_block_id>custom_symbol_sync_early_late_ff_0</source_block_id>
     <sink_block_id>qtgui_time_sink_x_0_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -2958,7 +2958,7 @@
   </connection>
   <connection>
     <source_block_id>rational_resampler_xxx_0_0_0_0_1_0</source_block_id>
-    <sink_block_id>custom_symbol_sync_gardner_ff_0</sink_block_id>
+    <sink_block_id>custom_symbol_sync_early_late_ff_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

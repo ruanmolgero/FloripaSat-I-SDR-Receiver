@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<block>
+  <name>Symbol Sync Early-Late</name>
+  <key>custom_symbol_sync_early_late_ff</key>
+  <category>[Custom]/Synchronizers</category>
+  <import>import custom</import>
+  <make>custom.symbol_sync_early_late_ff($samples_per_symbol, $max_samples_per_symbol, $sample_period, $bandwidth, $damping_ratio, $loop_gain)</make>
+  
+  <param>
+    <name>Samples per Symbol</name>
+    <key>samples_per_symbol</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Max Samples per Symbol</name>
+    <key>max_samples_per_symbol</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Sample Period (s)</name>
+    <key>sample_period</key>
+    <type>float</type>
+  </param>
+
+  <param>
+    <name>Bandwidth (Hz)</name>
+    <key>bandwidth</key>
+    <type>float</type>
+  </param>
+  
+  <param>
+    <name>Damping Ratio</name>
+    <key>damping_ratio</key>
+    <type>float</type>
+  </param>
+  
+  <param>
+    <name>Loop Gain</name>
+    <key>loop_gain</key>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

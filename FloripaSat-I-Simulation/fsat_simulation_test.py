@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Fsat Simulation Test
-# Generated: Sat Jun 29 00:14:12 2019
+# Generated: Sat Jun 29 01:46:32 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -97,13 +97,13 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.tabs.addTab(self.tabs_widget_1, 'Time')
         self.top_layout.addWidget(self.tabs)
         self.qtgui_time_sink_x_0_0_0_0 = qtgui.time_sink_f(
-        	11518, #size
+        	11200, #size
         	symbol_rate*samples_per_symbol, #samp_rate
         	"Signal", #name
         	3 #number of inputs
         )
         self.qtgui_time_sink_x_0_0_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0.set_y_axis(-2, 2)
+        self.qtgui_time_sink_x_0_0_0_0.set_y_axis(-1.2, 1.2)
 
         self.qtgui_time_sink_x_0_0_0_0.set_y_label('Amplitude', "")
 
@@ -147,7 +147,7 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(0,1)]
         [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
-        	900, #size
+        	280, #size
         	symbol_rate*samples_per_symbol, #samp_rate
         	"Message", #name
         	1 #number of inputs
@@ -342,7 +342,7 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
             samp_rate=sample_rate,
         )
         self.custom_zero_decimator_ff_0 = custom.zero_decimator_ff(60, 0.05)
-        self.custom_symbol_sync_gardner_ff_0 = custom.symbol_sync_gardner_ff(samples_per_symbol, 2*samples_per_symbol, 1/sample_rate, 0.01*sample_rate, 0.707, 3.22)
+        self.custom_symbol_sync_early_late_ff_0 = custom.symbol_sync_early_late_ff(samples_per_symbol, 3*samples_per_symbol, 1/sample_rate, 0.01*sample_rate, 0.707, 3.22)
         self.custom_rect_encoder_bf_0 = custom.rect_encoder_bf(samples_per_symbol)
         self.custom_frame_sync_bb_0 = custom.frame_sync_bb(([0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,0,0,0,1,0,1,0,1,0,0,1,1,1,1,1,1,0]), 32, 3)
         self.custom_binary_decisor_fb_0 = custom.binary_decisor_fb()
@@ -363,10 +363,10 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.connect((self.custom_binary_decisor_fb_0, 0), (self.custom_frame_sync_bb_0, 0))
         self.connect((self.custom_frame_sync_bb_0, 0), (self.blocks_char_to_float_0, 0))
         self.connect((self.custom_rect_encoder_bf_0, 0), (self.interp_fir_filter_xxx_0, 0))
-        self.connect((self.custom_symbol_sync_gardner_ff_0, 0), (self.custom_zero_decimator_ff_0, 0))
-        self.connect((self.custom_symbol_sync_gardner_ff_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 0))
+        self.connect((self.custom_symbol_sync_early_late_ff_0, 0), (self.custom_zero_decimator_ff_0, 0))
+        self.connect((self.custom_symbol_sync_early_late_ff_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 0))
         self.connect((self.custom_zero_decimator_ff_0, 0), (self.custom_binary_decisor_fb_0, 0))
-        self.connect((self.fm_demodulator_0, 0), (self.custom_symbol_sync_gardner_ff_0, 0))
+        self.connect((self.fm_demodulator_0, 0), (self.custom_symbol_sync_early_late_ff_0, 0))
         self.connect((self.fm_demodulator_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.fm_demodulator_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 1))
         self.connect((self.fm_modulator_0, 0), (self.blocks_throttle_0, 0))
