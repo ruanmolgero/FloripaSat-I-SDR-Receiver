@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
-  <name>Symbol Sync</name>
-  <key>custom_symbol_sync_ff</key>
+  <name>Symbol Sync Gardner</name>
+  <key>custom_symbol_sync_gardner_ff</key>
   <category>[Custom]/Synchronizers</category>
   <import>import custom</import>
-  <make>custom.symbol_sync_ff($samples_per_symbol, $max_samples_per_symbol, $sample_period, $bandwidth, $damping_ratio, $loop_gain)</make>
+  <make>custom.symbol_sync_gardner_ff($samples_per_symbol, $max_samples_per_symbol, $sample_period, $bandwidth, $damping_ratio, $loop_gain)</make>
   
   <param>
     <name>Samples per Symbol</name>
