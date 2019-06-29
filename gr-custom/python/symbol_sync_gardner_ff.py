@@ -83,11 +83,13 @@ class symbol_sync_gardner_ff(gr.sync_block):
                     self.clock_step = 1 + self.loop_filter_accumulator + (error*self.LOOP_FILTER_PROPORTIONAL)
 
                     # Add warning to clock step too low or too high
-                    if self.clock_step < 0.6:
-                        self.clock_step = 0.6
+                    if self.clock_step < 0.65:
+                        self.clock_step = 0.65
+                        self.loop_filter_accumulator = 0
                         print "Clock Step Too Low!!!"
-                    elif self.clock_step > 1.7:
-                        self.clock_step = 1.7
+                    elif self.clock_step > 1.6:
+                        self.clock_step = 1.6
+                        self.loop_filter_accumulator = 0
                         print "Clock Step Too High!!!"
                     # # Print clock_step for filter configuration
                     # print self.clock_step
