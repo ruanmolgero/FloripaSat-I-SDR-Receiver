@@ -348,7 +348,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>firdes.gaussian(1, samples_per_symbol, BT, filter_taps)</value>
+      <value>firdes.gaussian(1, samples_per_symbol/4, BT, filter_taps)</value>
     </param>
     <param>
       <key>type</key>

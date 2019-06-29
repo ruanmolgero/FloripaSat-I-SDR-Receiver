@@ -22,6 +22,7 @@ install(FILES
     custom_rect_encoder_bf.xml
     custom_frame_sync_bb.xml
     custom_zero_decimator_ff.xml
-    custom_symbol_sync_ff.xml
-    custom_binary_decisor_fb.xml DESTINATION share/gnuradio/grc/blocks
+    custom_symbol_sync_gardner_ff.xml
+    custom_binary_decisor_fb.xml
+    custom_symbol_sync_early_late_ff.xml DESTINATION share/gnuradio/grc/blocks
 )

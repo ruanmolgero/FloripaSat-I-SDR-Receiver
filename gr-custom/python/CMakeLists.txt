@@ -35,8 +35,9 @@ GR_PYTHON_INSTALL(
     rect_encoder_bf.py
     frame_sync_bb.py
     zero_decimator_ff.py
-    symbol_sync_ff.py
-    binary_decisor_fb.py DESTINATION ${GR_PYTHON_DIR}/custom
+    symbol_sync_gardner_ff.py
+    binary_decisor_fb.py
+    symbol_sync_early_late_ff.py DESTINATION ${GR_PYTHON_DIR}/custom
 )
 
 ########################################################################
@@ -50,5 +51,6 @@ GR_ADD_TEST(qa_circular_accumulator_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOUR
 GR_ADD_TEST(qa_rect_encoder_bf ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_rect_encoder_bf.py)
 GR_ADD_TEST(qa_frame_sync_bb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_frame_sync_bb.py)
 GR_ADD_TEST(qa_zero_decimator_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_zero_decimator_ff.py)
-GR_ADD_TEST(qa_symbol_sync_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_symbol_sync_ff.py)
+GR_ADD_TEST(qa_symbol_sync_gardner_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_symbol_sync_gardner_ff.py)
 GR_ADD_TEST(qa_binary_decisor_fb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_binary_decisor_fb.py)
+GR_ADD_TEST(qa_symbol_sync_early_late_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_symbol_sync_early_late_ff.py)
