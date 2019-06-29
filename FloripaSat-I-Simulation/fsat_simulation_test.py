@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Fsat Simulation Test
-# Generated: Sat Jun 29 01:46:32 2019
+# Title: FloripaSat-I Simulation Test
+# Author: Rafael Alevato && Ruan Lopes
+# Description: Radio simulation test for the FloripaSat-I CubeSat
+# Generated: Sat Jun 29 19:49:10 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -33,6 +35,7 @@ from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
+from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
 from simple_channel import simple_channel  # grc-generated hier_block
 import custom
@@ -44,9 +47,9 @@ from gnuradio import qtgui
 class fsat_simulation_test(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Fsat Simulation Test")
+        gr.top_block.__init__(self, "FloripaSat-I Simulation Test")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Fsat Simulation Test")
+        self.setWindowTitle("FloripaSat-I Simulation Test")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -79,7 +82,11 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.sample_rate_tx = sample_rate_tx = symbol_rate*samples_per_symbol*25/6
         self.sample_rate_rx = sample_rate_rx = sample_rate_tx*6/5
         self.sample_rate = sample_rate = symbol_rate*samples_per_symbol
+        self.pi = pi = numpy.pi
+        self.phase_shift = phase_shift = 0
+        self.noise_amp = noise_amp = 1e-6
         self.modulation_sensitivity = modulation_sensitivity = 4e3
+        self.freq_shift = freq_shift = 1e3
 
         ##################################################
         # Blocks
@@ -96,6 +103,28 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.tabs_layout_1.addLayout(self.tabs_grid_layout_1)
         self.tabs.addTab(self.tabs_widget_1, 'Time')
         self.top_layout.addWidget(self.tabs)
+        self._phase_shift_range = Range(0, 2*pi, 0.01, 0, 200)
+        self._phase_shift_win = RangeWidget(self._phase_shift_range, self.set_phase_shift, "Channel Phase Shift", "counter_slider", float)
+        self.tabs_grid_layout_1.addWidget(self._phase_shift_win, 1, 0, 1, 1)
+        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(1,2)]
+        [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
+        self._noise_amp_range = Range(1e-6, 0.1, 1e-6, 1e-6, 200)
+        self._noise_amp_win = RangeWidget(self._noise_amp_range, self.set_noise_amp, "Channel Noise Amplitude", "counter_slider", float)
+        self.tabs_grid_layout_1.addWidget(self._noise_amp_win, 2, 0, 1, 1)
+        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(2,3)]
+        [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
+        self._freq_shift_range = Range(0, 100e3, 1e3, 1e3, 200)
+        self._freq_shift_win = RangeWidget(self._freq_shift_range, self.set_freq_shift, "Channel Frequency Shift", "counter_slider", float)
+        self.tabs_grid_layout_1.addWidget(self._freq_shift_win, 0, 0, 1, 1)
+        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(0,1)]
+        [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
+        self.simple_channel_0 = simple_channel(
+            freq_shift=freq_shift,
+            noise_amplitude=noise_amp,
+            noise_seed=1,
+            phase_shift=phase_shift,
+            samp_rate=sample_rate,
+        )
         self.qtgui_time_sink_x_0_0_0_0 = qtgui.time_sink_f(
         	11200, #size
         	symbol_rate*samples_per_symbol, #samp_rate
@@ -143,8 +172,8 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0_0_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0.pyqwidget(), Qt.QWidget)
-        self.tabs_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_0_win, 0, 0, 1, 1)
-        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(0,1)]
+        self.tabs_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_0_win, 3, 0, 7, 1)
+        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(3,10)]
         [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
         	280, #size
@@ -193,8 +222,8 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0.pyqwidget(), Qt.QWidget)
-        self.tabs_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_win, 1, 0, 1, 1)
-        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(1,2)]
+        self.tabs_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_win, 10, 0, 7, 1)
+        [self.tabs_grid_layout_1.setRowStretch(r,1) for r in range(10,17)]
         [self.tabs_grid_layout_1.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_freq_sink_x_0_0_0 = qtgui.freq_sink_c(
         	8192, #size
@@ -331,7 +360,7 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.tabs_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 2, 0, 1, 1)
         [self.tabs_grid_layout_0.setRowStretch(r,1) for r in range(2,3)]
         [self.tabs_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
-        self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_fff(1, (firdes.gaussian(1, samples_per_symbol/4, 0.25, 100)))
+        self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_fff(1, (firdes.gaussian(1, samples_per_symbol/2, 0.25, 100)))
         self.interp_fir_filter_xxx_0.declare_sample_delay(0)
         self.fm_modulator_0 = fm_modulator(
             modulation_sensitivity=modulation_sensitivity,
@@ -356,9 +385,8 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         ##################################################
         self.connect((self.blocks_char_to_float_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))
         self.connect((self.blocks_file_source_0_0, 0), (self.blocks_unpack_k_bits_bb_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.fm_demodulator_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.qtgui_freq_sink_x_0_0_0, 0))
+        self.connect((self.blocks_throttle_0, 0), (self.simple_channel_0, 0))
         self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.custom_rect_encoder_bf_0, 0))
         self.connect((self.custom_binary_decisor_fb_0, 0), (self.custom_frame_sync_bb_0, 0))
         self.connect((self.custom_frame_sync_bb_0, 0), (self.blocks_char_to_float_0, 0))
@@ -372,6 +400,8 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.connect((self.fm_modulator_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.interp_fir_filter_xxx_0, 0), (self.fm_modulator_0, 0))
         self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 2))
+        self.connect((self.simple_channel_0, 0), (self.fm_demodulator_0, 0))
+        self.connect((self.simple_channel_0, 0), (self.qtgui_freq_sink_x_0_0_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "fsat_simulation_test")
@@ -400,7 +430,7 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0_0_0_0.set_samp_rate(self.symbol_rate*self.samples_per_symbol)
         self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.symbol_rate*self.samples_per_symbol)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symbol_rate*self.samples_per_symbol)
-        self.interp_fir_filter_xxx_0.set_taps((firdes.gaussian(1, self.samples_per_symbol/4, 0.25, 100)))
+        self.interp_fir_filter_xxx_0.set_taps((firdes.gaussian(1, self.samples_per_symbol/2, 0.25, 100)))
         self.fm_modulator_0.set_samp_rate(self.symbol_rate*self.samples_per_symbol)
 
     def get_sample_rate_tx(self):
@@ -421,10 +451,31 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
 
     def set_sample_rate(self, sample_rate):
         self.sample_rate = sample_rate
+        self.simple_channel_0.set_samp_rate(self.sample_rate)
         self.qtgui_freq_sink_x_0_0_0.set_frequency_range(0, self.sample_rate)
         self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.sample_rate)
         self.fm_demodulator_0.set_samp_rate(self.sample_rate)
         self.blocks_throttle_0.set_sample_rate(self.sample_rate)
+
+    def get_pi(self):
+        return self.pi
+
+    def set_pi(self, pi):
+        self.pi = pi
+
+    def get_phase_shift(self):
+        return self.phase_shift
+
+    def set_phase_shift(self, phase_shift):
+        self.phase_shift = phase_shift
+        self.simple_channel_0.set_phase_shift(self.phase_shift)
+
+    def get_noise_amp(self):
+        return self.noise_amp
+
+    def set_noise_amp(self, noise_amp):
+        self.noise_amp = noise_amp
+        self.simple_channel_0.set_noise_amplitude(self.noise_amp)
 
     def get_modulation_sensitivity(self):
         return self.modulation_sensitivity
@@ -433,6 +484,13 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.modulation_sensitivity = modulation_sensitivity
         self.fm_modulator_0.set_modulation_sensitivity(self.modulation_sensitivity)
         self.fm_demodulator_0.set_modulation_sensitivity(self.modulation_sensitivity)
+
+    def get_freq_shift(self):
+        return self.freq_shift
+
+    def set_freq_shift(self, freq_shift):
+        self.freq_shift = freq_shift
+        self.simple_channel_0.set_freq_shift(self.freq_shift)
 
 
 def main(top_block_cls=fsat_simulation_test, options=None):
