@@ -5,7 +5,7 @@ file = open("zeros.bin","wb")
 file.write(binary_message)
 file.close()
 
-binary_message = b'\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA'
+binary_message = b'\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa'
 for i in range(20):
     binary_message += binary_message
 file = open("ones_zeros.bin","wb")
@@ -39,17 +39,14 @@ file.write(binary_message)
 file.close()
 
 preamble = b'\xaa\xaa\xaa\xaa\x5d\xe6\x2a\x7e'
-message_size = b'\x00\x00\x98'
-# Hello FloripaSat-I
-message = b'\x48\x65\x6C\x6C\x6F\x20\x46\x6C\x6F\x72\x69\x70\x61\x53\x61\x74\x2D\x49\x20'
-padding = b'\xAA\xAA\xAA\xAA'
+message_size = b'\x00\x00\xa0'
+# Message: "Hello FloripaSat-I\n"
+message = b'\x48\x65\x6c\x6c\x6f\x20\x46\x6c\x6f\x72\x69\x70\x61\x53\x61\x74\x2d\x49\x0d\x0a'
+padding = b'\xaa\xaa\xaa\xaa'
 binary_message = preamble
 binary_message += message_size
 binary_message += message
 binary_message += padding
-binary_zeros = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-for i in range(20):
-    binary_message += binary_zeros
 file = open("fsat-hello.bin","wb")
 file.write(binary_message)
 file.close()
