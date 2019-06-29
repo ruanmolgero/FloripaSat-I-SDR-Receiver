@@ -21,8 +21,6 @@
 
 import numpy
 from gnuradio import gr
-# # Import for printing data to file
-# from os.path import expanduser
 
 class symbol_sync_gardner_ff(gr.sync_block):
     """
@@ -62,12 +60,6 @@ class symbol_sync_gardner_ff(gr.sync_block):
         self.LOOP_FILTER_INTEGRATOR = loop_gain*(4/(ETA)**2)*(bandwidth*sample_period)**2
         self.loop_filter_accumulator = 0
 
-        # # Print data to file for analysis
-        # home = expanduser("~")
-        # self.sync_data = open(home + "/code/symbol_sync_data.csv", "w")
-        # self.sync_data.write("Input,Output,Sample 1/2T,Sample 1T,Sample 3/2T,Error,Clock Step,Loop Filter Result,Loop Filter Accumulator\n")
-        # self.sync_data = open(home + "/code/symbol_sync_data.csv", "a")
-
     def work(self, input_items, output_items):
         in0 = input_items[0]
         out = output_items[0]
@@ -78,8 +70,6 @@ class symbol_sync_gardner_ff(gr.sync_block):
                 self.sample_buffer.append(in0[i])
                 self.delay += 1
                 out[i] = 0
-                # # Print data to file for analysis
-                # self.sync_data.write(str(in0[i]) + "," + str(out[i]) + ",0,0,0,0,0,0,0\n")
             else:
                 self.sample_buffer.append(in0[i])
                 self.clock_accumulator += self.clock_step
@@ -99,20 +89,10 @@ class symbol_sync_gardner_ff(gr.sync_block):
                     elif self.clock_step > 1.7:
                         self.clock_step = 1.7
                         print "Clock Step Too High!!!"
-
-                    # # Print data to file for analysis
-                    # self.sync_data.write(str(in0[i]) + "," + str(out[i])
-                    #                   + "," + str(self.sample_buffer[-int(1*self.samples_per_symbol/2) - 1])
-                    #                   + "," + str(self.sample_buffer[-self.samples_per_symbol - 1])
-                    #                   + "," + str(self.sample_buffer[-int(3*self.samples_per_symbol/2) - 1])
-                    #                   + "," + str(error)
-                    #                   + "," + str(self.clock_step)
-                    #                   + "," + str(loop_filter_result)
-                    #                   + "," + str(self.loop_filter_accumulator) + "\n")
+                    # # Print clock_step for filter configuration
+                    # print self.clock_step
                 else:
                     out[i] = 0
-                    # # Print data to file for analysis
-                    # self.sync_data.write(str(in0[i]) + "," + str(out[i]) + ",0,0,0,0,0,0,0\n")
                 self.sample_buffer.pop(0)
 
         return len(out)

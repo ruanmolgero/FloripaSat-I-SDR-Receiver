@@ -22,7 +22,7 @@
 import numpy
 from gnuradio import gr
 from struct import pack
-from os.path import expanduser
+import os
 
 class frame_sync_bb(gr.sync_block):
     """
@@ -43,9 +43,12 @@ class frame_sync_bb(gr.sync_block):
         self.message = ""
         self.detected = False
         self.input_buffer = []
-        self.home = expanduser("~")
+        home = os.path.expanduser("~")
+        if not os.path.exists(home + "/fsat-simulation"):
+            os.makedirs(home + "/fsat-simulation")
         # Clean old file
-        message_file = open(self.home + "/code/message.bin", "wb")
+        self.file_path = home + "/fsat-simulation/message.bin"
+        message_file = open(self.file_path, "wb")
         message_file.close()
 
     def work(self, input_items, output_items):
@@ -80,12 +83,12 @@ class frame_sync_bb(gr.sync_block):
                             self.message += str(int(in0[i]))
                         else:
                             # Open file for writing
-                            message_file = open(self.home + "/code/message.bin", "ab")
+                            message_file = open(self.file_path, "ab")
                             number_bytes = int(len(self.message) / 8)
                             for j in range(number_bytes):
-                                message_file.write(pack('i', int(self.message[j*8: j*8+8], 2)))
+                                message_file.write(chr(int(self.message[j*8: j*8+8], 2)))
                             if (len(self.message) % 8) > 0:
-                                message_file.write(pack('i', int(self.message[number_bytes*8:], 2)))
+                                message_file.write(chr(int(self.message[number_bytes*8:], 2)))
                             message_file.close()
                             self.detected = False
                             self.message = ""
