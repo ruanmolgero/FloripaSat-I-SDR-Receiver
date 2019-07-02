@@ -34,8 +34,10 @@ except ImportError:
 from circular_accumulator_ff import circular_accumulator_ff
 from rect_encoder_bf import rect_encoder_bf
 from frame_sync_bb import frame_sync_bb
-from zero_decimator_ff import zero_decimator_ff
-from symbol_sync_gardner_ff import symbol_sync_gardner_ff
-from binary_decisor_fb import binary_decisor_fb
-from symbol_sync_early_late_ff import symbol_sync_early_late_ff
+
+
+
+
+from symbol_sync_gardner_fb import symbol_sync_gardner_fb
+from symbol_sync_early_late_fb import symbol_sync_early_late_fb
 #

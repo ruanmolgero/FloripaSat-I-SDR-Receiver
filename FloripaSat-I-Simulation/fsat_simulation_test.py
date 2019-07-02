@@ -5,7 +5,7 @@
 # Title: FloripaSat-I Simulation Test
 # Author: Rafael Alevato && Ruan Lopes
 # Description: Radio simulation test for the FloripaSat-I CubeSat
-# Generated: Sat Jun 29 19:49:10 2019
+# Generated: Tue Jul  2 13:38:13 2019
 ##################################################
 
 from distutils.version import StrictVersion
@@ -129,7 +129,7 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         	11200, #size
         	symbol_rate*samples_per_symbol, #samp_rate
         	"Signal", #name
-        	3 #number of inputs
+        	2 #number of inputs
         )
         self.qtgui_time_sink_x_0_0_0_0.set_update_time(0.10)
         self.qtgui_time_sink_x_0_0_0_0.set_y_axis(-1.2, 1.2)
@@ -147,7 +147,7 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         if not True:
           self.qtgui_time_sink_x_0_0_0_0.disable_legend()
 
-        labels = ["Sampled", "Received", "Transmitted", '', '',
+        labels = ["Transmitted", "Received", "Transmitted", '', '',
                   '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
                   1, 1, 1, 1, 1]
@@ -155,12 +155,12 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
                   "magenta", "yellow", "dark red", "dark green", "blue"]
         styles = [1, 1, 1, 1, 1,
                   1, 1, 1, 1, 1]
-        markers = [0, -1, -1, -1, -1,
+        markers = [-1, -1, -1, -1, -1,
                    -1, -1, -1, -1, -1]
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
                   1.0, 1.0, 1.0, 1.0, 1.0]
 
-        for i in xrange(3):
+        for i in xrange(2):
             if len(labels[i]) == 0:
                 self.qtgui_time_sink_x_0_0_0_0.set_line_label(i, "Data {0}".format(i))
             else:
@@ -370,11 +370,9 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
             modulation_sensitivity=modulation_sensitivity,
             samp_rate=sample_rate,
         )
-        self.custom_zero_decimator_ff_0 = custom.zero_decimator_ff(60, 0.05)
-        self.custom_symbol_sync_early_late_ff_0 = custom.symbol_sync_early_late_ff(samples_per_symbol, 3*samples_per_symbol, 1/sample_rate, 0.01*sample_rate, 0.707, 3.22)
+        self.custom_symbol_sync_early_late_fb_0 = custom.symbol_sync_early_late_fb(samples_per_symbol, 1/sample_rate, 0.01*sample_rate, 0.707, 3.22)
         self.custom_rect_encoder_bf_0 = custom.rect_encoder_bf(samples_per_symbol)
         self.custom_frame_sync_bb_0 = custom.frame_sync_bb(([0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,0,0,0,1,0,1,0,1,0,0,1,1,1,1,1,1,0]), 32, 3)
-        self.custom_binary_decisor_fb_0 = custom.binary_decisor_fb()
         self.blocks_unpack_k_bits_bb_0 = blocks.unpack_k_bits_bb(8)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, sample_rate,True)
         self.blocks_file_source_0_0 = blocks.file_source(gr.sizeof_char*1, '/home/rpa/code/FloripaSat-I-SDR-Receiver/Binary-Files/fsat-hello.bin', True)
@@ -388,18 +386,15 @@ class fsat_simulation_test(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_throttle_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.simple_channel_0, 0))
         self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.custom_rect_encoder_bf_0, 0))
-        self.connect((self.custom_binary_decisor_fb_0, 0), (self.custom_frame_sync_bb_0, 0))
         self.connect((self.custom_frame_sync_bb_0, 0), (self.blocks_char_to_float_0, 0))
         self.connect((self.custom_rect_encoder_bf_0, 0), (self.interp_fir_filter_xxx_0, 0))
-        self.connect((self.custom_symbol_sync_early_late_ff_0, 0), (self.custom_zero_decimator_ff_0, 0))
-        self.connect((self.custom_symbol_sync_early_late_ff_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 0))
-        self.connect((self.custom_zero_decimator_ff_0, 0), (self.custom_binary_decisor_fb_0, 0))
-        self.connect((self.fm_demodulator_0, 0), (self.custom_symbol_sync_early_late_ff_0, 0))
+        self.connect((self.custom_symbol_sync_early_late_fb_0, 0), (self.custom_frame_sync_bb_0, 0))
+        self.connect((self.fm_demodulator_0, 0), (self.custom_symbol_sync_early_late_fb_0, 0))
         self.connect((self.fm_demodulator_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.fm_demodulator_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 1))
         self.connect((self.fm_modulator_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.interp_fir_filter_xxx_0, 0), (self.fm_modulator_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 2))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_time_sink_x_0_0_0_0, 0))
         self.connect((self.simple_channel_0, 0), (self.fm_demodulator_0, 0))
         self.connect((self.simple_channel_0, 0), (self.qtgui_freq_sink_x_0_0_0, 0))
 

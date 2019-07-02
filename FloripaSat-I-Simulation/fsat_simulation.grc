@@ -479,7 +479,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2624, 292)</value>
+      <value>(2272, 292)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -617,45 +617,6 @@
     </param>
   </block>
   <block>
-    <key>custom_binary_decisor_fb</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(2248, 296)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>custom_binary_decisor_fb_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
     <key>custom_frame_sync_bb</key>
     <param>
       <key>alias</key>
@@ -683,7 +644,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2416, 276)</value>
+      <value>(2064, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -707,7 +668,7 @@
     </param>
   </block>
   <block>
-    <key>custom_symbol_sync_gardner_ff</key>
+    <key>custom_symbol_sync_gardner_fb</key>
     <param>
       <key>bandwidth</key>
       <value>0.01*sample_rate</value>
@@ -734,7 +695,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1800, 252)</value>
+      <value>(1808, 260)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -742,7 +703,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>custom_symbol_sync_gardner_ff_0</value>
+      <value>custom_symbol_sync_gardner_fb_0</value>
     </param>
     <param>
       <key>loop_gain</key>
@@ -751,10 +712,6 @@
     <param>
       <key>maxoutbuf</key>
       <value>0</value>
-    </param>
-    <param>
-      <key>max_samples_per_symbol</key>
-      <value>2*samples_per_symbol</value>
     </param>
     <param>
       <key>minoutbuf</key>
@@ -767,53 +724,6 @@
     <param>
       <key>samples_per_symbol</key>
       <value>samples_per_symbol</value>
-    </param>
-  </block>
-  <block>
-    <key>custom_zero_decimator_ff</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(2040, 284)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>custom_zero_decimator_ff_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>zero_threshold</key>
-      <value>0.05</value>
-    </param>
-    <param>
-      <key>zeros_max_interval</key>
-      <value>60</value>
     </param>
   </block>
   <block>
@@ -1001,7 +911,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1768, 132)</value>
+      <value>(1808, 132)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1886,7 +1796,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2784, 268)</value>
+      <value>(2432, 268)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2253,7 +2163,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1816, 420)</value>
+      <value>(1808, 396)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2285,11 +2195,11 @@
     </param>
     <param>
       <key>label1</key>
-      <value>"Sampled"</value>
+      <value>"Received"</value>
     </param>
     <param>
       <key>marker1</key>
-      <value>0</value>
+      <value>-1</value>
     </param>
     <param>
       <key>style1</key>
@@ -2521,7 +2431,7 @@
     </param>
     <param>
       <key>nconnections</key>
-      <value>2</value>
+      <value>1</value>
     </param>
     <param>
       <key>size</key>
@@ -2954,32 +2864,14 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>custom_binary_decisor_fb_0</source_block_id>
-    <sink_block_id>custom_frame_sync_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>custom_frame_sync_bb_0</source_block_id>
     <sink_block_id>blocks_char_to_float_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>custom_symbol_sync_gardner_ff_0</source_block_id>
-    <sink_block_id>custom_zero_decimator_ff_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>custom_symbol_sync_gardner_ff_0</source_block_id>
-    <sink_block_id>qtgui_time_sink_x_0_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>custom_zero_decimator_ff_0</source_block_id>
-    <sink_block_id>custom_binary_decisor_fb_0</sink_block_id>
+    <source_block_id>custom_symbol_sync_gardner_fb_0</source_block_id>
+    <sink_block_id>custom_frame_sync_bb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -3021,7 +2913,7 @@
   </connection>
   <connection>
     <source_block_id>rational_resampler_xxx_0_0_0_0_1_0</source_block_id>
-    <sink_block_id>custom_symbol_sync_gardner_ff_0</sink_block_id>
+    <sink_block_id>custom_symbol_sync_gardner_fb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -3035,7 +2927,7 @@
     <source_block_id>rational_resampler_xxx_0_0_0_0_1_0</source_block_id>
     <sink_block_id>qtgui_time_sink_x_0_0_0_0</sink_block_id>
     <source_key>0</source_key>
-    <sink_key>1</sink_key>
+    <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>simple_channel_0</source_block_id>
