@@ -22,20 +22,34 @@
 import numpy
 from gnuradio import gr
 
-class symbol_sync_gardner_new_fb(gr.basic_block):
+class symbol_sync_early_late_fb(gr.basic_block):
     """
-    docstring for block symbol_sync_gardner_new_fb
+    Samples the input signal at the best timing by sinchronizing with the receiving signal. It uses Early-Late TED method for synchronization. More about Early-Late method at https://www.nutaq.com/blog/symbol-timing-recovery-methods-digital-iq-demodulator. It supports only 2 symbols and has a binary decisor (1 if input > 0 else 0).
+    
+    Arguments:
+        Samples per Symbol (int): Expected number of samples per symbol.
+        
+        Sample Period (float): Inverse of sample frequency.
+        
+        Bandwidth (float): Bandwidth of loop filter in Hz.
+        
+        Damping Ratio (float): Damping factor for loop filter.
+        
+        Loop Gain (float): Adjustment gain for the loop filter.
+        
+    Returns:
+        Sampled binary signal.
     """
     def __init__(self, samples_per_symbol, sample_period, bandwidth, damping_ratio, loop_gain):
         gr.basic_block.__init__(self,
-            name="symbol_sync_gardner_new_fb",
+            name="symbol_sync_early_late_fb",
             in_sig=[numpy.float32],
             out_sig=[numpy.int8]
         )
         self.samples_per_symbol = samples_per_symbol
         self.clock_step = 1
         self.clock_accumulator = 0
-        self.max_samples_per_symbol = int(1.5 * samples_per_symbol)
+        self.max_samples_per_symbol = int(2.5 * samples_per_symbol)
         self.sample_buffer = []
         self.delay = 0
         ETA = 1 / (damping_ratio + (1/(4*damping_ratio)))
@@ -61,10 +75,11 @@ class symbol_sync_gardner_new_fb(gr.basic_block):
                 self.sample_buffer.append(in0[number_inputs])
                 self.clock_accumulator += self.clock_step
                 if self.clock_accumulator >= self.samples_per_symbol:
-                    # Gardner Method
+                    # Early-Late Method
                     self.clock_accumulator %= self.samples_per_symbol
-                    error = self.sample_buffer[-1] - self.sample_buffer[-self.samples_per_symbol - 1]
-                    error *= self.sample_buffer[-int(self.samples_per_symbol/2) - 1]
+                    error = self.sample_buffer[-int(self.samples_per_symbol/2) - 1] - self.sample_buffer[-int(3*self.samples_per_symbol/2) - 1]
+                    error *= self.sample_buffer[-self.samples_per_symbol - 1]
+                    error *= -1
                     self.loop_filter_accumulator += error * self.LOOP_FILTER_INTEGRATOR
                     self.clock_step = 1 + self.loop_filter_accumulator + (error*self.LOOP_FILTER_PROPORTIONAL)
                     # Add warning to clock step too low or too high
@@ -77,7 +92,7 @@ class symbol_sync_gardner_new_fb(gr.basic_block):
                         self.loop_filter_accumulator = 0
                         print "Clock Step Too High!!!"
                     # Binary Decisor
-                    if (self.sample_buffer[-1] > 0):
+                    if (self.sample_buffer[-self.samples_per_symbol - 1] > 0):
                         out[number_outputs] = 1
                     else:
                         out[number_outputs] = -1
