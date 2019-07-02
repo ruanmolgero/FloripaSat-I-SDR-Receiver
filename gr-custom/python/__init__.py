@@ -38,4 +38,5 @@ from zero_decimator_ff import zero_decimator_ff
 from symbol_sync_gardner_ff import symbol_sync_gardner_ff
 from binary_decisor_fb import binary_decisor_fb
 from symbol_sync_early_late_ff import symbol_sync_early_late_ff
+from symbol_sync_gardner_new_fb import symbol_sync_gardner_new_fb
 #
