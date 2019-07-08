@@ -16,13 +16,10 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-
 install(FILES
     custom_circular_accumulator_ff.xml
     custom_rect_encoder_bf.xml
     custom_frame_sync_bb.xml
-    custom_zero_decimator_ff.xml
-    custom_symbol_sync_gardner_ff.xml
-    custom_binary_decisor_fb.xml
-    custom_symbol_sync_early_late_ff.xml DESTINATION share/gnuradio/grc/blocks
+    custom_symbol_sync_gardner_fb.xml
+    custom_symbol_sync_early_late_fb.xml DESTINATION share/gnuradio/grc/blocks
 )
