@@ -172,6 +172,33 @@
     </param>
   </block>
   <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1136, 12)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>nfilts</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>32</value>
+    </param>
+  </block>
+  <block>
     <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
@@ -336,6 +363,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(1208, 12)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>rrc_taps</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(40), 0.35, 45*nfilts)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(176, 76)</value>
     </param>
     <param>
@@ -479,7 +533,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2832, 292)</value>
+      <value>(2808, 292)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -581,7 +635,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1008, 292)</value>
+      <value>(1024, 292)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -687,7 +741,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2624, 276)</value>
+      <value>(2600, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -726,7 +780,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -777,11 +831,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2368, 380)</value>
+      <value>(2344, 388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -840,7 +894,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2368, 260)</value>
+      <value>(2344, 260)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -891,7 +945,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1888, 284)</value>
+      <value>(1864, 284)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -934,7 +988,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1012,7 +1066,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1099,7 +1153,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2336, 132)</value>
+      <value>(2344, 132)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1398,7 +1452,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1408, 156)</value>
+      <value>(1448, 156)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1697,7 +1751,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1896, 156)</value>
+      <value>(1864, 156)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1984,7 +2038,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2992, 268)</value>
+      <value>(2968, 268)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2351,7 +2405,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(720, 436)</value>
+      <value>(784, 436)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2710,7 +2764,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1176, 268)</value>
+      <value>(1216, 268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2769,7 +2823,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1648, 268)</value>
+      <value>(1640, 268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2828,7 +2882,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(2120, 268)</value>
+      <value>(2088, 268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2875,7 +2929,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>2</value>
     </param>
     <param>
       <key>freq_shift</key>
@@ -2883,7 +2937,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1408, 260)</value>
+      <value>(1448, 260)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2915,7 +2969,7 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>sample_rate</value>
+      <value>sample_rate_tx</value>
     </param>
   </block>
   <block>
@@ -2930,7 +2984,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
